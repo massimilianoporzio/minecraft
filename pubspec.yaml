@@ -71,7 +71,7 @@ flutter:
     - assets/images/parallax/morning/
     - assets/images/parallax/night/
     - assets/images/sprite_sheets/blocks/
-    - assets/images/sprite_sheets/items/
+    - assets/images/sprite_sheets/item/
     - assets/images/sprite_sheets/mobs/
     - assets/images/sprite_sheets/player/
     
