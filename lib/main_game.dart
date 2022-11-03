@@ -7,14 +7,18 @@ import 'package:minecraft/global/world_data.dart';
 class MainGame extends FlameGame {
   final WorldData worldData; //*riceve i dati del mondo da un launcher
 
-  MainGame({required this.worldData});
+  MainGame({required this.worldData}) {
+    //*quando creo un MainGame assegno l'istanza creata al field mainRef del global instance
+    globalGameReference.mainGameRef = this;
+  }
   //*SIAMO NEL MAIN, il componente "root"
   //qui creo una istanza e la metto a disposizione di tutti i componenti (getX)
-  GlobalGameReference globalGameReference = GlobalGameReference.instance;
+  GlobalGameReference globalGameReference = Get.put(GlobalGameReference());
 
+  PlayerComponent playerComponent = PlayerComponent();
   @override
   Future<void>? onLoad() async {
     super.onLoad();
-    add(PlayerComponent());
+    add(playerComponent);
   }
 }

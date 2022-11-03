@@ -1,9 +1,14 @@
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
+import 'package:minecraft/global/global_game_reference.dart';
+import 'package:minecraft/global/player_data.dart';
+import 'package:minecraft/global/world_data.dart';
+import 'package:minecraft/main_game.dart';
 
 //ANIMATED SPRITE!
 class PlayerComponent extends SpriteAnimationComponent {
+  final double speed = 40;
   @override
   Future<void>? onLoad() async {
     super.onLoad();
@@ -23,7 +28,18 @@ class PlayerComponent extends SpriteAnimationComponent {
   //* come animare?
   @override
   void update(double dt) {
+    //*prendo l'istanza globale
+    MainGame gameRef = GlobalGameReference.instance.mainGameRef;
+    //*prendo i dati del mondo
+    WorldData worldData = gameRef.worldData;
+    //*prendo i dati del player di quel mondo;
+    PlayerData playerData = worldData.playerData;
     super.update(dt);
-    position.x += 1;
+    if (playerData.motionState == ComponentMotionState.walkingLeft) {
+      position.x -= speed * dt;
+    }
+    if (playerData.motionState == ComponentMotionState.walkingRight) {
+      position.x += speed * dt;
+    }
   }
 }

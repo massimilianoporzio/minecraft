@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:minecraft/main_game.dart';
 
 class GlobalGameReference {
-  late MainGame gameRef;
+  late MainGame mainGameRef; //tiene il riferimento al main Game
 
   //GETTER DEL SINGLEOTN
   static GlobalGameReference get instance {

@@ -2,6 +2,7 @@ class PlayerData {
   //*health
   //*hunger
   //state: walkingLeft
+  ComponentMotionState motionState = ComponentMotionState.idle;
 }
 
 enum ComponentMotionState {
