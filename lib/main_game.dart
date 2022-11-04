@@ -22,8 +22,21 @@ class MainGame extends FlameGame {
   @override
   Future<void>? onLoad() async {
     super.onLoad();
-    print(ChunkGenerationMethods.generateChunk());
+
+    renderChunk(ChunkGenerationMethods.generateChunk());
     add(playerComponent);
-    add(Blockcomponent(block: Blocks.diamondOre));
+  }
+
+  void renderChunk(List<List<Blocks?>> chunck) {
+    //iterate
+    chunck.asMap().forEach((int yIndex, List<Blocks?> rowOfBlocks) {
+      rowOfBlocks.asMap().forEach((int xIndex, Blocks? block) {
+        if (block != null) {
+          add(Blockcomponent(
+              block: block,
+              blockIndex: Vector2(xIndex.toDouble(), yIndex.toDouble())));
+        }
+      });
+    });
   }
 }

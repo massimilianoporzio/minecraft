@@ -29,7 +29,7 @@ class PlayerComponent extends SpriteAnimationComponent {
   @override
   Future<void>? onLoad() async {
     super.onLoad();
-
+    priority = 100;
     //WALKING
     playerWalkingSpriteSheet = SpriteSheet(
         image: await Flame.images

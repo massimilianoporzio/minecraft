@@ -33,6 +33,11 @@ un chunk ha 25 rows and 16 columns
           chunk[riga][colonna] = Blocks.grass;
         });
       }
+      if (riga >= 6) {
+        rigadiBlocks.asMap().forEach((int colonna, Blocks? block) {
+          chunk[riga][colonna] = Blocks.dirt;
+        });
+      }
     });
 
     return chunk;
