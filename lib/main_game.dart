@@ -5,6 +5,7 @@ import 'package:minecraft/components/player_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/world_data.dart';
 import 'package:minecraft/resources/bloks.dart';
+import 'package:minecraft/utils/chunk_generator_methods.dart';
 
 class MainGame extends FlameGame {
   final WorldData worldData; //*riceve i dati del mondo da un launcher
@@ -21,6 +22,7 @@ class MainGame extends FlameGame {
   @override
   Future<void>? onLoad() async {
     super.onLoad();
+    print(ChunkGenerationMethods.generateChunk());
     add(playerComponent);
     add(Blockcomponent(block: Blocks.diamondOre));
   }
