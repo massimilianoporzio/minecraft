@@ -5,6 +5,7 @@ import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/global/world_data.dart';
 import 'package:minecraft/main_game.dart';
+import 'package:minecraft/utils/game_methods.dart';
 
 //ANIMATED SPRITE!
 class PlayerComponent extends SpriteAnimationComponent {
@@ -29,7 +30,10 @@ class PlayerComponent extends SpriteAnimationComponent {
   @override
   Future<void>? onLoad() async {
     super.onLoad();
-    priority = 100;
+    priority = 100; //SULLO STACK VISIVO
+
+    anchor = Anchor.bottomCenter; //ANCORAGGIO DEL COMPONENT
+
     //WALKING
     playerWalkingSpriteSheet = SpriteSheet(
         image: await Flame.images
@@ -54,6 +58,13 @@ class PlayerComponent extends SpriteAnimationComponent {
   void update(double dt) {
     super.update(dt);
     movementLogic();
+  }
+
+  @override
+  void onGameResize(Vector2 newScreenSize) {
+    super.onGameResize(newScreenSize);
+
+    size = GameMethods.getBlockSize() * 1.5;
   }
 
   void movementLogic() {

@@ -7,6 +7,6 @@ class GlobalGameReference {
 
   //GETTER DEL SINGLEOTN
   static GlobalGameReference get instance {
-    return Get.put(GlobalGameReference()); //*singleton!
+    return Get.put(GlobalGameReference()); //*singleton?comune a tutti con GetX
   }
 }

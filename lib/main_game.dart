@@ -22,7 +22,7 @@ class MainGame extends FlameGame {
   @override
   Future<void>? onLoad() async {
     super.onLoad();
-
+    camera.followComponent(playerComponent);
     renderChunk(ChunkGenerationMethods.generateChunk());
     add(playerComponent);
   }
