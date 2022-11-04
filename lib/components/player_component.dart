@@ -8,7 +8,9 @@ import 'package:minecraft/main_game.dart';
 
 //ANIMATED SPRITE!
 class PlayerComponent extends SpriteAnimationComponent {
-  final double speed = 40;
+  final double speed = 5;
+  bool isFacingRight = true;
+
   @override
   Future<void>? onLoad() async {
     super.onLoad();
@@ -23,23 +25,39 @@ class PlayerComponent extends SpriteAnimationComponent {
         //in seconds
         stepTime: 0.1);
     size = Vector2(100, 100);
+    position = Vector2(100, 500);
   }
 
   //* come animare?
   @override
   void update(double dt) {
+    super.update(dt);
+    movementLogic();
+  }
+
+  void movementLogic() {
     //*prendo l'istanza globale
     MainGame gameRef = GlobalGameReference.instance.mainGameRef;
     //*prendo i dati del mondo
     WorldData worldData = gameRef.worldData;
     //*prendo i dati del player di quel mondo;
     PlayerData playerData = worldData.playerData;
-    super.update(dt);
+    //*moving left
     if (playerData.motionState == ComponentMotionState.walkingLeft) {
-      position.x -= speed * dt;
+      if (isFacingRight) {
+        flipHorizontallyAroundCenter();
+        isFacingRight = false;
+      }
+      position.x -= speed;
     }
+    //*moving right
     if (playerData.motionState == ComponentMotionState.walkingRight) {
-      position.x += speed * dt;
+      if (!isFacingRight) {
+        flipHorizontallyAroundCenter();
+        isFacingRight = true;
+        ;
+      }
+      position.x += speed;
     }
   }
 }
