@@ -8,24 +8,45 @@ import 'package:minecraft/main_game.dart';
 
 //ANIMATED SPRITE!
 class PlayerComponent extends SpriteAnimationComponent {
+  final Vector2 playerDimensions = Vector2(60, 60); //* src Size
   final double speed = 5;
+  final double stepTime = 0.3;
   bool isFacingRight = true;
+
+  late SpriteSheet playerWalkingSpriteSheet; //*loading spritesheet is async!
+  late SpriteSheet playerIdleSpriteSheet; //* so we use "late"
+
+  late SpriteAnimation walkingAnimation =
+      playerWalkingSpriteSheet.createAnimation(
+          row: 0,
+          //in seconds
+          stepTime: stepTime);
+  late SpriteAnimation idleAnimation = playerIdleSpriteSheet.createAnimation(
+      row: 0,
+      //in seconds
+      stepTime: stepTime);
 
   @override
   Future<void>? onLoad() async {
     super.onLoad();
-    SpriteSheet playerSpriteSheet = SpriteSheet(
+
+    //WALKING
+    playerWalkingSpriteSheet = SpriteSheet(
         image: await Flame.images
             .load('sprite_sheets/player/player_walking_sprite_sheet.png'),
         //*size of the single image
-        srcSize: Vector2.all(60));
-    //*anima usando la prima riga (0)
-    animation = playerSpriteSheet.createAnimation(
-        row: 0,
-        //in seconds
-        stepTime: 0.1);
+        srcSize: playerDimensions);
+    //IDLE
+    playerIdleSpriteSheet = SpriteSheet(
+        image: await Flame.images
+            .load('sprite_sheets/player/player_idle_sprite_sheet.png'),
+        //*size of the single image
+        srcSize: playerDimensions);
+
+    //* initial values
     size = Vector2(100, 100);
     position = Vector2(100, 500);
+    animation = idleAnimation;
   }
 
   //* come animare?
@@ -44,6 +65,7 @@ class PlayerComponent extends SpriteAnimationComponent {
     PlayerData playerData = worldData.playerData;
     //*moving left
     if (playerData.motionState == ComponentMotionState.walkingLeft) {
+      animation = walkingAnimation;
       if (isFacingRight) {
         flipHorizontallyAroundCenter();
         isFacingRight = false;
@@ -52,12 +74,15 @@ class PlayerComponent extends SpriteAnimationComponent {
     }
     //*moving right
     if (playerData.motionState == ComponentMotionState.walkingRight) {
+      animation = walkingAnimation;
       if (!isFacingRight) {
         flipHorizontallyAroundCenter();
         isFacingRight = true;
-        ;
       }
       position.x += speed;
+    }
+    if (playerData.motionState == ComponentMotionState.idle) {
+      animation = idleAnimation;
     }
   }
 }
