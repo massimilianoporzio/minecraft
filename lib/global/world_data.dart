@@ -16,6 +16,10 @@ class WorldData {
     chunkHeight,
     (index) => [],
   );
+  Chunk leftWorldChunk = List.generate(
+    chunkHeight,
+    (index) => [],
+  );
 
   WorldData({required this.seed}); //per ora così
 }

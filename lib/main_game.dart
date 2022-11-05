@@ -28,16 +28,17 @@ class MainGame extends FlameGame {
     super.onLoad();
     camera.followComponent(playerComponent);
     //* creo tre chunk uno dietro l'altro a destra
-    GameMethods.addChunckToRightWorldChunks(
-        ChunkGenerationMethods.generateChunk(0)); //chunck iniziale
-    GameMethods.addChunckToRightWorldChunks(
-        ChunkGenerationMethods.generateChunk(1)); // chunck destro
-    GameMethods.addChunckToRightWorldChunks(
-        ChunkGenerationMethods.generateChunk(2)); // chunck destro
+    GameMethods.addChunckToWorldChunks(
+        ChunkGenerationMethods.generateChunk(-1), false); //chunck sinistro
+
+    GameMethods.addChunckToWorldChunks(
+        ChunkGenerationMethods.generateChunk(0), true); // chunck centrale
+    GameMethods.addChunckToWorldChunks(
+        ChunkGenerationMethods.generateChunk(1), true); // chunck destro
     //li mostro
+    renderChunk(-1);
     renderChunk(0);
     renderChunk(1);
-    renderChunk(2);
 
     // renderChunk(ChunkGenerationMethods.generateChunk());
 

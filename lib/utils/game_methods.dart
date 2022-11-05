@@ -43,32 +43,61 @@ class GameMethods {
     return (chunkHeight * 0.2).toInt();
   }
 
-  static void addChunckToRightWorldChunks(Chunk chunk) {
-    Chunk rightWorldChunk =
-        GlobalGameReference.instance.mainGameRef.worldData.rightWorldChunk;
-    //* yIndex è l'indice di riga
-    chunk.asMap().forEach((int yIndex, List<Blocks?> value) {
-      //AGGIUNGO ALLA RIGA (A DESTRA!)
-      //*ACCEDO AL CORRENTE RIGHT WORLD CHUNK e gli aggiungo la riga di blocks
-      rightWorldChunk[yIndex].addAll(value);
-    });
+  static void addChunckToWorldChunks(Chunk chunk, bool isRight) {
+    if (isRight) {
+      Chunk rightWorldChunk =
+          GlobalGameReference.instance.mainGameRef.worldData.rightWorldChunk;
+//* yIndex è l'indice di riga
+      chunk.asMap().forEach((int yIndex, List<Blocks?> value) {
+        //AGGIUNGO ALLA RIGA (A DESTRA!)
+        //*ACCEDO AL CORRENTE RIGHT WORLD CHUNK e gli aggiungo la riga di blocks
+        rightWorldChunk[yIndex].addAll(value);
+      });
+    } else {
+      //*AGG A SINISTRA
+      Chunk leftWorldChunk =
+          GlobalGameReference.instance.mainGameRef.worldData.leftWorldChunk;
+      chunk.asMap().forEach((int yIndex, List<Blocks?> value) {
+        //AGGIUNGO ALLA RIGA (A DESTRA!)
+        //*ACCEDO AL CORRENTE LEFT WORLD CHUNK e gli aggiungo la riga di blocks
+        leftWorldChunk[yIndex].addAll(value);
+      });
+    }
   }
 
   static Chunk getChunk(int chunkIndex) {
     //prendo il chunk destro globale
     Chunk rightWorldChunk =
         GlobalGameReference.instance.mainGameRef.worldData.rightWorldChunk;
+
+    Chunk leftWorldChunk =
+        GlobalGameReference.instance.mainGameRef.worldData.leftWorldChunk;
+
     Chunk chunk = [];
-    rightWorldChunk.asMap().forEach((int index, List<Blocks?> rigaDiBlocchi) {
-      //*per ogni riga di blocchi prendo il chunck (largo 16) che mi interessa
-      //*ES:
-      ///* 3 chunck 16 erba e 16 sabbia e 16 erba
-      //* [g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g]
-      //* voglio estrarre un chunk (largo 16!) a partire da un indice (es il secondo chunk in quella riga)
-      ///
-      chunk.add(rigaDiBlocchi.sublist(
-          chunkWidth * chunkIndex, chunkWidth * (chunkIndex + 1)));
-    });
+    if (chunkIndex >= 0) {
+      rightWorldChunk.asMap().forEach((int index, List<Blocks?> rigaDiBlocchi) {
+        //*per ogni riga di blocchi prendo il chunck (largo 16) che mi interessa
+        //*ES:
+        ///* 3 chunck 16 erba e 16 sabbia e 16 erba
+        //* [g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g]
+        //* voglio estrarre un chunk (largo 16!) a partire da un indice (es il secondo chunk in quella riga)
+        ///
+        chunk.add(rigaDiBlocchi.sublist(
+            chunkWidth * chunkIndex, chunkWidth * (chunkIndex + 1)));
+      });
+    } else {
+      //FLIP HORIZONTALY
+
+      leftWorldChunk.asMap().forEach((int index, List<Blocks?> rigaDiBlocchi) {
+        //UNO SHIFTATO
+        chunk.add(rigaDiBlocchi
+            .sublist(chunkWidth * (chunkIndex.abs() - 1),
+                chunkWidth * (chunkIndex.abs()))
+            .reversed
+            .toList());
+      });
+    }
+
     return chunk;
   }
 }

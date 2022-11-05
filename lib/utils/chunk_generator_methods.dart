@@ -44,19 +44,29 @@ un chunk ha 25 rows and 16 columns
     //A CASO
     Biomes biome = Random().nextBool() ? Biomes.desert : Biomes.birchForest;
     int seed = GlobalGameReference.instance.mainGameRef.worldData.seed;
-
+    seed += chunckIndex < 0 ? 10 : 0;
     Chunk chunk = generateNullChunck();
 
     //* NOISE per generare random chunk! creo noise anche per n chunk
-    List<List<double>> rawNoise = noise2(chunkWidth * (chunckIndex + 1),
-        1, //* +1 e per partire dalla prima chunckWidth:16, 32 ecc.
+    //* uso abs per i left (indici negativi) e non aggiungo 1 perché sto a sinistra
+    int indice = chunckIndex >= 0
+        ? chunkWidth * (chunckIndex + 1)
+        : chunkWidth * (chunckIndex.abs());
+
+    List<List<double>> rawNoise = noise2(
+        indice, 1, //* +1 e per partire dalla prima chunckWidth:16, 32 ecc.
         noiseType: NoiseType.Perlin,
         seed: seed,
         frequency: 0.05); //* uso 1 per dire una sola riga! la funz è 2D
-    //*ora però mi servono solo gli ultimi 16 valori
-    List<int> yValues = getYValuesFromRawNoise(rawNoise);
 
-    yValues.removeRange(0, chunkWidth * chunckIndex);
+    List<int> yValues = getYValuesFromRawNoise(rawNoise);
+    //*ora però mi servono solo gli ultimi 16 valori (DESTRA)
+
+    yValues.removeRange(
+        0,
+        chunckIndex >= 0
+            ? chunkWidth * chunckIndex
+            : chunkWidth * (chunckIndex.abs() - 1));
 
     chunk = generatePrimarySoil(chunk, yValues, biome);
     chunk = generateSecondarySoil(chunk, yValues, biome);
