@@ -54,7 +54,7 @@ class GameMethods {
     return (chunkHeight * 0.2).toInt();
   }
 
-  static void addChunckToWorldChunks(Chunk chunk, bool isRight) {
+  static void addChunkToWorldChunks(Chunk chunk, bool isRight) {
     if (isRight) {
       Chunk rightWorldChunk =
           GlobalGameReference.instance.mainGameRef.worldData.rightWorldChunk;
