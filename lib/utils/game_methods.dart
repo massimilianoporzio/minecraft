@@ -11,7 +11,12 @@ class GameMethods {
   }
 
   static Vector2 getBlockSize() {
-    return Vector2.all(getScreenSize().width / chunkWidth);
+    // return Vector2.all(getScreenSize().width / chunkWidth) *0.6; //* SOLO PER DEBUG
+    return Vector2.all(30);
+  }
+
+  static int get maxSecondarySoilExtent {
+    return freeArea + 6; //*DAL TERRENO SCENDO DI 6
   }
 
   static Size getScreenSize() {
@@ -28,5 +33,10 @@ class GameMethods {
   static Future<Sprite> getSpriteFromBlock(Blocks block) async {
     SpriteSheet spriteSheet = await getBlockSpriteSheet();
     return spriteSheet.getSprite(0, block.index);
+  }
+
+  //return WHERE terrain will start
+  static int get freeArea {
+    return (chunkHeight * 0.2).toInt();
   }
 }

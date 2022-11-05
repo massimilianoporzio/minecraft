@@ -48,8 +48,8 @@ class PlayerComponent extends SpriteAnimationComponent {
         srcSize: playerDimensions);
 
     //* initial values
-    size = Vector2(100, 100);
-    position = Vector2(100, 500);
+    // size = Vector2(100, 100);
+    position = Vector2(100, 400);
     animation = idleAnimation;
   }
 
