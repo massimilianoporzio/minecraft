@@ -61,4 +61,10 @@ class MainGame extends FlameGame {
       });
     });
   }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    // print(WorldData.chunksThathShoudlBeRendered);
+  }
 }

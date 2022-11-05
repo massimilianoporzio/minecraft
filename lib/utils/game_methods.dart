@@ -13,9 +13,20 @@ class GameMethods {
     return GameMethods();
   }
 
+  static double get playerXIndexPosition {
+    return GlobalGameReference.instance.mainGameRef.playerComponent.position.x /
+        getBlockSize().x;
+  }
+
   static Vector2 getBlockSize() {
     // return Vector2.all(getScreenSize().width / chunkWidth) *0.6; //* SOLO PER DEBUG
     return Vector2.all(30);
+  }
+
+  static int get currentChunk {
+    return playerXIndexPosition >= 0
+        ? playerXIndexPosition ~/ chunkWidth
+        : playerXIndexPosition ~/ chunkWidth - 1;
   }
 
   static int get maxSecondarySoilExtent {

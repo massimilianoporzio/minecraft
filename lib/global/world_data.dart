@@ -1,5 +1,6 @@
 import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/utils/constants.dart';
+import 'package:minecraft/utils/game_methods.dart';
 
 import '../utils/typedefs.dart';
 
@@ -22,4 +23,12 @@ class WorldData {
   );
 
   WorldData({required this.seed}); //per ora così
+
+  static List<int> get chunksThathShoudlBeRendered {
+    return [
+      GameMethods.currentChunk - 1,
+      GameMethods.currentChunk,
+      GameMethods.currentChunk + 1
+    ];
+  }
 }
