@@ -8,6 +8,8 @@ import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/game_methods.dart';
 import 'package:minecraft/utils/typedefs.dart';
 
+import '../resources/biomes.dart';
+
 class ChunkGenerationMethods {
   static ChunkGenerationMethods get instance {
     return ChunkGenerationMethods();
@@ -38,6 +40,9 @@ un chunk ha 25 rows and 16 columns
   }
 
   static Chunck generateChunk() {
+    //A CASO
+    Biomes biome = Random().nextBool() ? Biomes.desert : Biomes.birchForest;
+
     Chunck chunk = generateNullChunck();
 
     //* NOISE per generare random chunk!
@@ -47,8 +52,9 @@ un chunk ha 25 rows and 16 columns
         frequency: 0.05); //* uso 1 per dire una sola riga! la funz è 2D
 
     List<int> yValues = getYValuesFromRawNoise(rawNoise);
-    chunk = generatePrimarySoil(chunk, yValues, Blocks.grass);
-    chunk = generateSecondarySoil(chunk, yValues, Blocks.dirt);
+
+    chunk = generatePrimarySoil(chunk, yValues, biome);
+    chunk = generateSecondarySoil(chunk, yValues, biome);
     chunk = generateStone(chunk);
     // //the 5th  y level grass
     // //* uso asMap così ho l'indicedi ogni riga
@@ -70,7 +76,8 @@ un chunk ha 25 rows and 16 columns
 
   //* BORDO INIZIALE DEL TERRENO
   static Chunck generatePrimarySoil(
-      Chunck chunk, List<int> yValues, Blocks block) {
+      Chunck chunk, List<int> yValues, Biomes biome) {
+    Blocks block = BiomeData.fromBiome(biome).primarySoil;
     yValues.asMap().forEach((int index, value) {
       chunk[value][index] = block;
     });
@@ -79,7 +86,8 @@ un chunk ha 25 rows and 16 columns
 
 //* BLOCCHI SOTTO IL TERRENO INIZIALE (6 in giù)
   static Chunck generateSecondarySoil(
-      Chunck chunk, List<int> yValues, Blocks block) {
+      Chunck chunk, List<int> yValues, Biomes biome) {
+    Blocks block = BiomeData.fromBiome(biome).primarySoil;
     yValues.asMap().forEach((int index, value) {
       for (var i = value + 1; i <= GameMethods.maxSecondarySoilExtent; i++) {
         chunk[i][index] = block;
