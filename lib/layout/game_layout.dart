@@ -14,7 +14,7 @@ class GameLayout extends StatelessWidget {
       children: [
         //*This is the main game
         //Passo i dati di un mondo
-        GameWidget(game: MainGame(worldData: WorldData())),
+        GameWidget(game: MainGame(worldData: WorldData(seed: 98765493))),
         //*here comes the hud
         const ControllerWidget()
       ],

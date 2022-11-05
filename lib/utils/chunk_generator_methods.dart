@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:fast_noise/fast_noise.dart';
 import 'package:flame/components.dart';
+import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/bloks.dart';
 import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/game_methods.dart';
@@ -39,19 +40,23 @@ un chunk ha 25 rows and 16 columns
     return yValues;
   }
 
-  static Chunck generateChunk() {
+  static Chunk generateChunk(int chunckIndex) {
     //A CASO
     Biomes biome = Random().nextBool() ? Biomes.desert : Biomes.birchForest;
+    int seed = GlobalGameReference.instance.mainGameRef.worldData.seed;
 
-    Chunck chunk = generateNullChunck();
+    Chunk chunk = generateNullChunck();
 
-    //* NOISE per generare random chunk!
-    List<List<double>> rawNoise = noise2(chunkWidth, 1,
+    //* NOISE per generare random chunk! creo noise anche per n chunk
+    List<List<double>> rawNoise = noise2(chunkWidth * (chunckIndex + 1),
+        1, //* +1 e per partire dalla prima chunckWidth:16, 32 ecc.
         noiseType: NoiseType.Perlin,
-        seed: 98765493,
+        seed: seed,
         frequency: 0.05); //* uso 1 per dire una sola riga! la funz è 2D
-
+    //*ora però mi servono solo gli ultimi 16 valori
     List<int> yValues = getYValuesFromRawNoise(rawNoise);
+
+    yValues.removeRange(0, chunkWidth * chunckIndex);
 
     chunk = generatePrimarySoil(chunk, yValues, biome);
     chunk = generateSecondarySoil(chunk, yValues, biome);
@@ -75,8 +80,8 @@ un chunk ha 25 rows and 16 columns
   }
 
   //* BORDO INIZIALE DEL TERRENO
-  static Chunck generatePrimarySoil(
-      Chunck chunk, List<int> yValues, Biomes biome) {
+  static Chunk generatePrimarySoil(
+      Chunk chunk, List<int> yValues, Biomes biome) {
     Blocks block = BiomeData.fromBiome(biome).primarySoil;
     yValues.asMap().forEach((int index, value) {
       chunk[value][index] = block;
@@ -85,8 +90,8 @@ un chunk ha 25 rows and 16 columns
   }
 
 //* BLOCCHI SOTTO IL TERRENO INIZIALE (6 in giù)
-  static Chunck generateSecondarySoil(
-      Chunck chunk, List<int> yValues, Biomes biome) {
+  static Chunk generateSecondarySoil(
+      Chunk chunk, List<int> yValues, Biomes biome) {
     Blocks block = BiomeData.fromBiome(biome).primarySoil;
     yValues.asMap().forEach((int index, value) {
       for (var i = value + 1; i <= GameMethods.maxSecondarySoilExtent; i++) {
@@ -96,7 +101,7 @@ un chunk ha 25 rows and 16 columns
     return chunk;
   }
 
-  static Chunck generateStone(Chunck chunck) {
+  static Chunk generateStone(Chunk chunck) {
     //* DA ALMENO 1 sotto il primo sotto il terrno
     //*iterate over x
     for (var index = 0; index < chunkWidth; index++) {

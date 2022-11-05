@@ -2,8 +2,10 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/bloks.dart';
 import 'package:minecraft/utils/constants.dart';
+import 'package:minecraft/utils/typedefs.dart';
 
 class GameMethods {
   static GameMethods get instance {
@@ -38,5 +40,16 @@ class GameMethods {
   //return WHERE terrain will start
   static int get freeArea {
     return (chunkHeight * 0.2).toInt();
+  }
+
+  static void addChunckToRightWorldChunks(Chunk chunk) {
+    Chunk rightWorldChunk =
+        GlobalGameReference.instance.mainGameRef.worldData.rightWorldChunk;
+    //* yIndex è l'indice di riga
+    chunk.asMap().forEach((int yIndex, List<Blocks?> value) {
+      //AGGIUNGO ALLA RIGA (A DESTRA!)
+      //*ACCEDO AL CORRENTE RIGHT WORLD CHUNK e gli aggiungo la riga di blocks
+      rightWorldChunk[yIndex].addAll(value);
+    });
   }
 }
