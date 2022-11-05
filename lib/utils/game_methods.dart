@@ -2,6 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/bloks.dart';
 import 'package:minecraft/utils/constants.dart';
@@ -51,5 +52,23 @@ class GameMethods {
       //*ACCEDO AL CORRENTE RIGHT WORLD CHUNK e gli aggiungo la riga di blocks
       rightWorldChunk[yIndex].addAll(value);
     });
+  }
+
+  static Chunk getChunk(int chunkIndex) {
+    //prendo il chunk destro globale
+    Chunk rightWorldChunk =
+        GlobalGameReference.instance.mainGameRef.worldData.rightWorldChunk;
+    Chunk chunk = [];
+    rightWorldChunk.asMap().forEach((int index, List<Blocks?> rigaDiBlocchi) {
+      //*per ogni riga di blocchi prendo il chunck (largo 16) che mi interessa
+      //*ES:
+      ///* 3 chunck 16 erba e 16 sabbia e 16 erba
+      //* [g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g]
+      //* voglio estrarre un chunk (largo 16!) a partire da un indice (es il secondo chunk in quella riga)
+      ///
+      chunk.add(rigaDiBlocchi.sublist(
+          chunkWidth * chunkIndex, chunkWidth * (chunkIndex + 1)));
+    });
+    return chunk;
   }
 }
