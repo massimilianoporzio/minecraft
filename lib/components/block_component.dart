@@ -1,15 +1,17 @@
 import 'package:flame/components.dart';
+import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/bloks.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 class Blockcomponent extends SpriteComponent {
   final Blocks block;
   final Vector2 blockIndex;
+  final int chunkIndex; //* di che chunk fa parte
 
-  Blockcomponent({
-    required this.block,
-    required this.blockIndex,
-  });
+  Blockcomponent(
+      {required this.block,
+      required this.blockIndex,
+      required this.chunkIndex});
 
   @override
   Future<void>? onLoad() async {
@@ -25,5 +27,19 @@ class Blockcomponent extends SpriteComponent {
     size = GameMethods.getBlockSize();
     position = Vector2(
         size.x * blockIndex.x, size.y * blockIndex.y); //* valore iniziale
+  }
+
+//*CHECK SE INDEX DEL CHUNK è DA RENDER SE NO LO RIMUOVO
+  @override
+  void update(double dt) {
+    super.update(dt);
+    if (!GlobalGameReference
+        .instance.mainGameRef.worldData.chunksThathShoudlBeRendered
+        .contains(chunkIndex)) {
+      //*UNRENDERING
+      removeFromParent();
+      GlobalGameReference.instance.mainGameRef.worldData.currentlyRenderedChunks
+          .remove(chunkIndex); //*lo "notifico" che non è più render
+    }
   }
 }

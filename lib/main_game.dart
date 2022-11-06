@@ -57,6 +57,7 @@ class MainGame extends FlameGame {
         if (block != null) {
           add(Blockcomponent(
               block: block,
+              chunkIndex: chunkIndex,
               blockIndex: Vector2(chunkIndex * chunkWidth + xIndex.toDouble(),
                   yIndex.toDouble())));
         }
