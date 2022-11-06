@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flame/game.dart';
 import 'package:get/get.dart';
 import 'package:minecraft/components/block_component.dart';
@@ -27,13 +29,13 @@ class MainGame extends FlameGame {
   Future<void>? onLoad() async {
     super.onLoad();
     camera.followComponent(playerComponent);
-    //* creo tre chunk uno dietro l'altro a destra
-    GameMethods.addChunckToWorldChunks(
+    //* creo tre chunk uno dietro l'altro
+    GameMethods.addChunkToWorldChunks(
         ChunkGenerationMethods.generateChunk(-1), false); //chunck sinistro
 
-    GameMethods.addChunckToWorldChunks(
+    GameMethods.addChunkToWorldChunks(
         ChunkGenerationMethods.generateChunk(0), true); // chunck centrale
-    GameMethods.addChunckToWorldChunks(
+    GameMethods.addChunkToWorldChunks(
         ChunkGenerationMethods.generateChunk(1), true); // chunck destro
     //li mostro
     renderChunk(-1);
@@ -66,5 +68,30 @@ class MainGame extends FlameGame {
   void update(double dt) {
     super.update(dt);
     // print(WorldData.chunksThathShoudlBeRendered);
+    worldData.chunksThathShoudlBeRendered
+        .asMap()
+        .forEach((int index, int chunkIndex) {
+      if (!worldData.currentlyRenderedChunks.contains(chunkIndex)) {
+        //*non ancora rendered
+        //*DESTRA:
+        if (chunkIndex >= 0) {
+          if (worldData.rightWorldChunk[0].length ~/ chunkWidth <
+              chunkIndex + 1) {
+            GameMethods.addChunkToWorldChunks(
+                ChunkGenerationMethods.generateChunk(chunkIndex), true);
+          }
+        } else {
+          //*SINISTRA
+          if (worldData.leftWorldChunk[0].length ~/ chunkWidth <
+              chunkIndex.abs()) {
+            GameMethods.addChunkToWorldChunks(
+                ChunkGenerationMethods.generateChunk(chunkIndex), false);
+          }
+        }
+
+        renderChunk(chunkIndex);
+        worldData.currentlyRenderedChunks.add(chunkIndex);
+      }
+    });
   }
 }

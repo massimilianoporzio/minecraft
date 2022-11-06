@@ -24,11 +24,13 @@ class WorldData {
 
   WorldData({required this.seed}); //per ora così
 
-  static List<int> get chunksThathShoudlBeRendered {
+  List<int> get chunksThathShoudlBeRendered {
     return [
       GameMethods.currentChunk - 1,
       GameMethods.currentChunk,
       GameMethods.currentChunk + 1
     ];
   }
+
+  List<int> currentlyRenderedChunks = [];
 }
