@@ -5,6 +5,7 @@ import 'package:fast_noise/fast_noise.dart';
 import 'package:flame/components.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/bloks.dart';
+import 'package:minecraft/resources/structures.dart';
 import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/game_methods.dart';
 import 'package:minecraft/utils/typedefs.dart';
@@ -71,6 +72,7 @@ un chunk ha 25 rows and 16 columns
     chunk = generatePrimarySoil(chunk, yValues, biome);
     chunk = generateSecondarySoil(chunk, yValues, biome);
     chunk = generateStone(chunk);
+    chunk = addStructureToChunk(chunk, yValues);
     // //the 5th  y level grass
     // //* uso asMap così ho l'indicedi ogni riga
     // chunk.asMap().forEach((int riga, List<Blocks?> rigadiBlocks) {
@@ -129,5 +131,32 @@ un chunk ha 25 rows and 16 columns
 
     chunck[GameMethods.maxSecondarySoilExtent].fillRange(x1, x2, Blocks.stone);
     return chunck;
+  }
+
+//*STRUTTURE
+  static Chunk addStructureToChunk(Chunk chunk, List<int> yValues) {
+    //*la voglio aggiungere DENTRO il chunk non che sbordi su altri chunk
+
+    Structure cuurentStructure = treeStructure;
+    Chunk structureList = List.from(
+        cuurentStructure.structure.reversed); //*creo copia al contrario
+    final int xPos = Random().nextInt(chunkWidth - cuurentStructure.maxWidth);
+    final int yPos = (yValues[xPos + (structureList.length ~/ 2)]) -
+        1; //* il corrispo yValue del terreno ma relativo al centro della struttura
+    //*itero sulle righe della struttura e tiro su di 1
+
+    for (var indexOfRow = 0;
+        indexOfRow < cuurentStructure.structure.length;
+        indexOfRow++) {
+      List<Blocks?> rigadiBlocksInStructure = structureList[indexOfRow];
+      rigadiBlocksInStructure
+          .asMap()
+          .forEach((int index, Blocks? blockInStructure) {
+        if (chunk[yPos - indexOfRow][xPos + index] == null) {
+          chunk[yPos - indexOfRow][xPos + index] = blockInStructure;
+        }
+      });
+    }
+    return chunk;
   }
 }

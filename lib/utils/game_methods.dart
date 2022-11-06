@@ -51,7 +51,7 @@ class GameMethods {
 
   //return WHERE terrain will start
   static int get freeArea {
-    return (chunkHeight * 0.2).toInt();
+    return (chunkHeight * 0.4).toInt();
   }
 
   static void addChunkToWorldChunks(Chunk chunk, bool isRight) {
