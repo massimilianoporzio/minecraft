@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:fast_noise/fast_noise.dart';
 import 'package:flame/components.dart';
@@ -11,6 +11,7 @@ import 'package:minecraft/utils/game_methods.dart';
 import 'package:minecraft/utils/typedefs.dart';
 
 import '../resources/biomes.dart';
+import '../structures/trees.dart';
 
 class ChunkGenerationMethods {
   static ChunkGenerationMethods get instance {
@@ -43,7 +44,8 @@ un chunk ha 25 rows and 16 columns
 
   static Chunk generateChunk(int chunckIndex) {
     //A CASO
-    Biomes biome = Random().nextBool() ? Biomes.desert : Biomes.birchForest;
+    Biomes biome =
+        math.Random().nextBool() ? Biomes.desert : Biomes.birchForest;
     int seed = GlobalGameReference.instance.mainGameRef.worldData.seed;
     seed += chunckIndex < 0 ? 10 : 0;
     Chunk chunk = generateNullChunck();
@@ -72,7 +74,7 @@ un chunk ha 25 rows and 16 columns
     chunk = generatePrimarySoil(chunk, yValues, biome);
     chunk = generateSecondarySoil(chunk, yValues, biome);
     chunk = generateStone(chunk);
-    chunk = addStructureToChunk(chunk, yValues);
+    chunk = addStructureToChunk(chunk, yValues, biome);
     // //the 5th  y level grass
     // //* uso asMap così ho l'indicedi ogni riga
     // chunk.asMap().forEach((int riga, List<Blocks?> rigadiBlocks) {
@@ -126,37 +128,50 @@ un chunk ha 25 rows and 16 columns
     }
 
     //*RANDOM STONE CHE SPUNTANO
-    int x1 = Random().nextInt(chunkWidth ~/ 2); //*divisione intera
-    int x2 = x1 + Random().nextInt(chunkWidth ~/ 2); //*seconda metà
+    int x1 = math.Random().nextInt(chunkWidth ~/ 2); //*divisione intera
+    int x2 = x1 + math.Random().nextInt(chunkWidth ~/ 2); //*seconda metà
 
     chunck[GameMethods.maxSecondarySoilExtent].fillRange(x1, x2, Blocks.stone);
     return chunck;
   }
 
 //*STRUTTURE
-  static Chunk addStructureToChunk(Chunk chunk, List<int> yValues) {
+  static Chunk addStructureToChunk(
+      Chunk chunk, List<int> yValues, Biomes biome) {
     //*la voglio aggiungere DENTRO il chunk non che sbordi su altri chunk
+    BiomeData.fromBiome(biome)
+        .generatingStructures
+        .asMap()
+        .forEach((key, Structure currentStructure) {
+      int numOcc = math.Random().nextInt(currentStructure.maxOccurences);
+      if (numOcc == 0 || numOcc == 1) {
+        numOcc = 2;
+      }
 
-    Structure cuurentStructure = treeStructure;
-    Chunk structureList = List.from(
-        cuurentStructure.structure.reversed); //*creo copia al contrario
-    final int xPos = Random().nextInt(chunkWidth - cuurentStructure.maxWidth);
-    final int yPos = (yValues[xPos + (structureList.length ~/ 2)]) -
-        1; //* il corrispo yValue del terreno ma relativo al centro della struttura
-    //*itero sulle righe della struttura e tiro su di 1
+      for (var occ = 0; occ < numOcc; occ++) {
+        Chunk structureList = List.from(currentStructure.structure
+            .reversed); //*creo copia al contrario (disegno al contrario)
+        final int xPos =
+            math.Random().nextInt(chunkWidth - currentStructure.maxWidth);
+        final int yPos = (yValues[xPos + (currentStructure.maxWidth ~/ 2)]) -
+            1; //* il corrispo yValue del terreno ma relativo al centro della struttura
+        //*itero sulle righe della struttura e tiro su di 1
 
-    for (var indexOfRow = 0;
-        indexOfRow < cuurentStructure.structure.length;
-        indexOfRow++) {
-      List<Blocks?> rigadiBlocksInStructure = structureList[indexOfRow];
-      rigadiBlocksInStructure
-          .asMap()
-          .forEach((int index, Blocks? blockInStructure) {
-        if (chunk[yPos - indexOfRow][xPos + index] == null) {
-          chunk[yPos - indexOfRow][xPos + index] = blockInStructure;
+        for (var indexOfRow = 0;
+            indexOfRow < currentStructure.structure.length;
+            indexOfRow++) {
+          List<Blocks?> rigadiBlocksInStructure = structureList[indexOfRow];
+          rigadiBlocksInStructure
+              .asMap()
+              .forEach((int index, Blocks? blockInStructure) {
+            if (chunk[yPos - indexOfRow][xPos + index] == null) {
+              chunk[yPos - indexOfRow][xPos + index] = blockInStructure;
+            }
+          });
         }
-      });
-    }
+      }
+    });
+
     return chunk;
   }
 }
