@@ -62,6 +62,9 @@ un chunk ha 25 rows and 16 columns
         seed: seed,
         frequency: 0.05); //* uso 1 per dire una sola riga! la funz è 2D
 
+    IntNoise processedNoise = GameMethods.processNoise(rawNoise);
+    print(processedNoise);
+
     List<int> yValues = getYValuesFromRawNoise(rawNoise);
     //*ora però mi servono solo gli ultimi 16 valori (DESTRA)
 
@@ -75,6 +78,7 @@ un chunk ha 25 rows and 16 columns
     chunk = generateSecondarySoil(chunk, yValues, biome);
     chunk = generateStone(chunk);
     chunk = addStructureToChunk(chunk, yValues, biome);
+    chunk = addOretoChunck(chunk, Blocks.ironOre);
     // //the 5th  y level grass
     // //* uso asMap così ho l'indicedi ogni riga
     // chunk.asMap().forEach((int riga, List<Blocks?> rigadiBlocks) {
@@ -172,6 +176,26 @@ un chunk ha 25 rows and 16 columns
       }
     });
 
+    return chunk;
+  }
+
+  static Chunk addOretoChunck(Chunk chunk, Blocks block) {
+    RawNoise rawNoise = noise2(chunkHeight, chunkWidth,
+        noiseType: NoiseType.Perlin,
+        frequency: 0.055,
+        seed: math.Random().nextInt(11000000));
+    IntNoise processedNoise = GameMethods.processNoise(rawNoise);
+    processedNoise
+        .asMap()
+        .forEach((int rowOfProcessedNoiseIndex, List<int> rowOfNoise) {
+      rowOfNoise.asMap().forEach((int index, int value) {
+        if (chunk[rowOfProcessedNoiseIndex][index] == Blocks.stone) {
+          if (value < 115) {
+            chunk[rowOfProcessedNoiseIndex][index] = block;
+          }
+        }
+      });
+    });
     return chunk;
   }
 }
