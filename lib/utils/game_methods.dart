@@ -40,7 +40,7 @@ class GameMethods {
   static Future<SpriteSheet> getBlockSpriteSheet() async {
     return SpriteSheet(
         image: await Flame.images
-            .load('sprite_sheets/blocks/block_sprite_sheet.png'),
+            .load('sprite_sheets/blocks/block_sprite_sheet_mod.png'),
         srcSize: Vector2.all(60));
   }
 

@@ -11,6 +11,7 @@ import 'package:minecraft/utils/game_methods.dart';
 import 'package:minecraft/utils/typedefs.dart';
 
 import '../resources/biomes.dart';
+import '../resources/ores.dart';
 import '../structures/trees.dart';
 
 class ChunkGenerationMethods {
@@ -63,7 +64,6 @@ un chunk ha 25 rows and 16 columns
         frequency: 0.05); //* uso 1 per dire una sola riga! la funz è 2D
 
     IntNoise processedNoise = GameMethods.processNoise(rawNoise);
-    print(processedNoise);
 
     List<int> yValues = getYValuesFromRawNoise(rawNoise);
     //*ora però mi servono solo gli ultimi 16 valori (DESTRA)
@@ -78,7 +78,10 @@ un chunk ha 25 rows and 16 columns
     chunk = generateSecondarySoil(chunk, yValues, biome);
     chunk = generateStone(chunk);
     chunk = addStructureToChunk(chunk, yValues, biome);
-    chunk = addOretoChunck(chunk, Blocks.ironOre);
+    chunk = addOretoChunck(chunk, Ore.ironOre);
+    chunk = addOretoChunck(chunk, Ore.coalOre);
+    chunk = addOretoChunck(chunk, Ore.goldOre);
+    chunk = addOretoChunck(chunk, Ore.diamondOre);
     // //the 5th  y level grass
     // //* uso asMap così ho l'indicedi ogni riga
     // chunk.asMap().forEach((int riga, List<Blocks?> rigadiBlocks) {
@@ -179,7 +182,7 @@ un chunk ha 25 rows and 16 columns
     return chunk;
   }
 
-  static Chunk addOretoChunck(Chunk chunk, Blocks block) {
+  static Chunk addOretoChunck(Chunk chunk, Ore ore) {
     RawNoise rawNoise = noise2(chunkHeight, chunkWidth,
         noiseType: NoiseType.Perlin,
         frequency: 0.055,
@@ -189,9 +192,10 @@ un chunk ha 25 rows and 16 columns
         .asMap()
         .forEach((int rowOfProcessedNoiseIndex, List<int> rowOfNoise) {
       rowOfNoise.asMap().forEach((int index, int value) {
-        if (chunk[rowOfProcessedNoiseIndex][index] == Blocks.stone) {
-          if (value < 115) {
-            chunk[rowOfProcessedNoiseIndex][index] = block;
+        if (chunk[rowOfProcessedNoiseIndex][index] == Blocks.stone ||
+            Ores.contains(chunk[rowOfProcessedNoiseIndex][index])) {
+          if (value < ore.rarity) {
+            chunk[rowOfProcessedNoiseIndex][index] = ore.block;
           }
         }
       });
