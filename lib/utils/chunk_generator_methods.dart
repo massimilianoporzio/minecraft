@@ -185,7 +185,7 @@ un chunk ha 25 rows and 16 columns
   static Chunk addOretoChunck(Chunk chunk, Ore ore) {
     RawNoise rawNoise = noise2(chunkHeight, chunkWidth,
         noiseType: NoiseType.Perlin,
-        frequency: 0.055,
+        frequency: 0.2,
         seed: math.Random().nextInt(11000000));
     IntNoise processedNoise = GameMethods.processNoise(rawNoise);
     processedNoise

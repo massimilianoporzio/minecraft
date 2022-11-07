@@ -5,8 +5,8 @@ class Ore {
   final int rarity;
 
   Ore({required this.block, required this.rarity});
-  static Ore ironOre = Ore(block: Blocks.ironOre, rarity: 110);
-  static Ore coalOre = Ore(block: Blocks.coalOre, rarity: 110);
-  static Ore goldOre = Ore(block: Blocks.goldOre, rarity: 74);
-  static Ore diamondOre = Ore(block: Blocks.diamondOre, rarity: 60);
+  static Ore ironOre = Ore(block: Blocks.ironOre, rarity: 80);
+  static Ore coalOre = Ore(block: Blocks.coalOre, rarity: 80);
+  static Ore goldOre = Ore(block: Blocks.goldOre, rarity: 60);
+  static Ore diamondOre = Ore(block: Blocks.diamondOre, rarity: 55);
 }
