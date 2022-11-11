@@ -113,7 +113,7 @@ un chunk ha 25 rows and 16 columns
 //* BLOCCHI SOTTO IL TERRENO INIZIALE (6 in giù)
   static Chunk generateSecondarySoil(
       Chunk chunk, List<int> yValues, Biomes biome) {
-    Blocks block = BiomeData.fromBiome(biome).primarySoil;
+    Blocks block = BiomeData.fromBiome(biome).secondarySoil;
     yValues.asMap().forEach((int index, value) {
       for (var i = value + 1; i <= GameMethods.maxSecondarySoilExtent; i++) {
         chunk[i][index] = block;
@@ -195,7 +195,17 @@ un chunk ha 25 rows and 16 columns
         if (chunk[rowOfProcessedNoiseIndex][index] == Blocks.stone ||
             Ores.contains(chunk[rowOfProcessedNoiseIndex][index])) {
           if (value < ore.rarity) {
-            chunk[rowOfProcessedNoiseIndex][index] = ore.block;
+            if (ore.block == Blocks.diamondOre) {
+              chunk[rowOfProcessedNoiseIndex < 20
+                  ? 24
+                  : rowOfProcessedNoiseIndex][index] = ore.block;
+            } else if (ore.block == Blocks.goldOre) {
+              chunk[rowOfProcessedNoiseIndex < 20
+                  ? 22
+                  : rowOfProcessedNoiseIndex][index] = ore.block;
+            } else {
+              chunk[rowOfProcessedNoiseIndex][index] = ore.block;
+            }
           }
         }
       });
