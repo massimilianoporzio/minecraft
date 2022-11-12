@@ -5,6 +5,7 @@ import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/global/world_data.dart';
 import 'package:minecraft/main_game.dart';
+import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 //ANIMATED SPRITE!
@@ -13,6 +14,7 @@ class PlayerComponent extends SpriteAnimationComponent {
   final double speed = 5;
   final double stepTime = 0.3;
   bool isFacingRight = true;
+  double yVelocity = 0; //falling in the y axis
 
   late SpriteSheet playerWalkingSpriteSheet; //*loading spritesheet is async!
   late SpriteSheet playerIdleSpriteSheet; //* so we use "late"
@@ -58,6 +60,13 @@ class PlayerComponent extends SpriteAnimationComponent {
   void update(double dt) {
     super.update(dt);
     movementLogic();
+    //*solo fino a una certa velocità
+    if (yVelocity < gravity * 5) {
+      position.y += yVelocity; //*each dt step y = yVelocity*dt
+      yVelocity += gravity; //*dV/dt costante
+    } else {
+      position.y += yVelocity; //*not increasing
+    }
   }
 
   @override
