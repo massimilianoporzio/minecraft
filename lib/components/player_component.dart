@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
@@ -9,12 +12,39 @@ import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 //ANIMATED SPRITE!
-class PlayerComponent extends SpriteAnimationComponent {
+class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   final Vector2 playerDimensions = Vector2(60, 60); //* src Size
-  final double speed = 5;
+  final double speed = 25;
   final double stepTime = 0.3;
   bool isFacingRight = true;
   double yVelocity = 0; //falling in the y axis
+
+  bool isCollidingBottom = false;
+  bool isCollidingLeft = false;
+  bool isCollidingRight = false;
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+    //* loop over intersection points
+    //*player y position is at the feet! (Anchor bottomCenter)
+    intersectionPoints.forEach((Vector2 individualIntesectionPoint) {
+      //*sottraggo 30% altezza del player pixel per essere sicuro
+      if (individualIntesectionPoint.y > (position.y - size.y * 0.3)) {
+        isCollidingBottom = true;
+      }
+      //*DX SINISTRA (above = minore! 0 sta in cima)
+      if (individualIntesectionPoint.y < (position.y - size.y * 0.3)) {
+        log("COLLIDING HORIZONTALLY");
+        //*check isFacingRight
+        if (isFacingRight) {
+          isCollidingRight = true;
+        } else {
+          isCollidingLeft = true;
+        }
+      }
+    });
+  }
 
   late SpriteSheet playerWalkingSpriteSheet; //*loading spritesheet is async!
   late SpriteSheet playerIdleSpriteSheet; //* so we use "late"
@@ -32,7 +62,8 @@ class PlayerComponent extends SpriteAnimationComponent {
   @override
   Future<void>? onLoad() async {
     super.onLoad();
-    priority = 100; //SULLO STACK VISIVO
+    add(RectangleHitbox());
+    priority = 2; //SULLO STACK VISIVO
 
     anchor = Anchor.bottomCenter; //ANCORAGGIO DEL COMPONENT
 
@@ -60,13 +91,21 @@ class PlayerComponent extends SpriteAnimationComponent {
   void update(double dt) {
     super.update(dt);
     movementLogic();
-    //*solo fino a una certa velocità
-    if (yVelocity < gravity * 5) {
-      position.y += yVelocity; //*each dt step y = yVelocity*dt
-      yVelocity += gravity; //*dV/dt costante
-    } else {
-      position.y += yVelocity; //*not increasing
+    //!SOLO se non cado
+    if (!isCollidingBottom) {
+//*solo fino a una certa velocità
+      if (yVelocity < gravity * 5) {
+        position.y += yVelocity - 0.3 * size.y; //*each dt step y = yVelocity*dt
+        //*correggo
+        yVelocity += gravity; //*dV/dt costante
+      } else {
+        position.y += yVelocity; //*not increasing
+      }
     }
+    isCollidingBottom =
+        false; //*reset per vedere cosa succede al prossimo frame
+    isCollidingLeft = false;
+    isCollidingRight = false; //*resetting
   }
 
   @override
@@ -84,7 +123,8 @@ class PlayerComponent extends SpriteAnimationComponent {
     //*prendo i dati del player di quel mondo;
     PlayerData playerData = worldData.playerData;
     //*moving left
-    if (playerData.motionState == ComponentMotionState.walkingLeft) {
+    if (playerData.motionState == ComponentMotionState.walkingLeft &&
+        !isCollidingLeft) {
       animation = walkingAnimation;
       if (isFacingRight) {
         flipHorizontallyAroundCenter();
@@ -93,7 +133,8 @@ class PlayerComponent extends SpriteAnimationComponent {
       position.x -= speed;
     }
     //*moving right
-    if (playerData.motionState == ComponentMotionState.walkingRight) {
+    if (playerData.motionState == ComponentMotionState.walkingRight &&
+        !isCollidingRight) {
       animation = walkingAnimation;
       if (!isFacingRight) {
         flipHorizontallyAroundCenter();

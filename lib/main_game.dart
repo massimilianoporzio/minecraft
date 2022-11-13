@@ -13,7 +13,7 @@ import 'package:minecraft/utils/game_methods.dart';
 
 import 'utils/typedefs.dart';
 
-class MainGame extends FlameGame {
+class MainGame extends FlameGame with HasCollisionDetection {
   final WorldData worldData; //*riceve i dati del mondo da un launcher
 
   MainGame({required this.worldData}) {

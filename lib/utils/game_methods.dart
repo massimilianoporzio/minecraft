@@ -19,8 +19,8 @@ class GameMethods {
   }
 
   static Vector2 getBlockSize() {
-    // return Vector2.all(getScreenSize().width / chunkWidth) *0.6; //* SOLO PER DEBUG
-    return Vector2.all(30);
+    return Vector2.all(getScreenSize().width / chunkWidth) * 0.6;
+    //return Vector2.all(30); //* SOLO PER DEBUG
   }
 
   static int get currentChunk {
