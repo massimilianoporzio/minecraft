@@ -14,7 +14,7 @@ import 'package:minecraft/utils/game_methods.dart';
 //ANIMATED SPRITE!
 class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   final Vector2 playerDimensions = Vector2(60, 60); //* src Size
-  final double speed = 25;
+
   final double stepTime = 0.3;
   bool isFacingRight = true;
   double yVelocity = 0; //falling in the y axis
@@ -89,22 +89,30 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     animation = idleAnimation;
   }
 
-  //* come animare?
-  @override
-  void update(double dt) {
-    super.update(dt);
-    movementLogic();
+  void fallingLogic(double dt) {
     //!SOLO se non cado
     if (!isCollidingBottom) {
 //*solo fino a una certa velocità
-      if (yVelocity < gravity * 5) {
+      if (yVelocity < GameMethods.gravity * dt * 5) {
         position.y += yVelocity - 0.3 * size.y; //*each dt step y = yVelocity*dt
         //*correggo
-        yVelocity += gravity; //*dV/dt costante
+        yVelocity += GameMethods.gravity * dt; //*dV/dt costante
       } else {
         position.y += yVelocity; //*not increasing
       }
     }
+  }
+
+  //* come animare?
+  @override
+  void update(double dt) {
+    super.update(dt);
+    movementLogic(dt);
+    fallingLogic(dt);
+    setAllCollisionToFalse(); //*resetting
+  }
+
+  void setAllCollisionToFalse() {
     isCollidingBottom =
         false; //*reset per vedere cosa succede al prossimo frame
     isCollidingLeft = false;
@@ -115,10 +123,39 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   void onGameResize(Vector2 newScreenSize) {
     super.onGameResize(newScreenSize);
 
-    size = GameMethods.getBlockSize() * 1.5;
+    size = GameMethods.blockSize * 1.5;
   }
 
-  void movementLogic() {
+  void move(ComponentMotionState componentMotionState, double dt) {
+    switch (componentMotionState) {
+      case ComponentMotionState.walkingLeft:
+        if (!isCollidingLeft) {
+          position.x -= (playerSpeed * GameMethods.blockSize.x) * dt;
+          animation = walkingAnimation;
+          if (isFacingRight) {
+            flipHorizontallyAroundCenter();
+            isFacingRight = false;
+          }
+        }
+
+        break;
+      case ComponentMotionState.walkingRight:
+        if (!isCollidingRight) {
+          position.x += (playerSpeed * GameMethods.blockSize.x) * dt;
+          if (!isFacingRight) {
+            flipHorizontallyAroundCenter();
+            isFacingRight = true;
+          }
+          animation = walkingAnimation;
+        }
+
+        break;
+      default:
+        break;
+    }
+  }
+
+  void movementLogic(double dt) {
     //*prendo l'istanza globale
     MainGame gameRef = GlobalGameReference.instance.mainGameRef;
     //*prendo i dati del mondo
@@ -126,24 +163,12 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     //*prendo i dati del player di quel mondo;
     PlayerData playerData = worldData.playerData;
     //*moving left
-    if (playerData.motionState == ComponentMotionState.walkingLeft &&
-        !isCollidingLeft) {
-      animation = walkingAnimation;
-      if (isFacingRight) {
-        flipHorizontallyAroundCenter();
-        isFacingRight = false;
-      }
-      position.x -= speed;
+    if (playerData.motionState == ComponentMotionState.walkingLeft) {
+      move(ComponentMotionState.walkingLeft, dt);
     }
     //*moving right
-    if (playerData.motionState == ComponentMotionState.walkingRight &&
-        !isCollidingRight) {
-      animation = walkingAnimation;
-      if (!isFacingRight) {
-        flipHorizontallyAroundCenter();
-        isFacingRight = true;
-      }
-      position.x += speed;
+    if (playerData.motionState == ComponentMotionState.walkingRight) {
+      move(ComponentMotionState.walkingRight, dt);
     }
     if (playerData.motionState == ComponentMotionState.idle) {
       animation = idleAnimation;

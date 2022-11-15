@@ -2,7 +2,6 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/bloks.dart';
 import 'package:minecraft/utils/constants.dart';
@@ -15,12 +14,16 @@ class GameMethods {
 
   static double get playerXIndexPosition {
     return GlobalGameReference.instance.mainGameRef.playerComponent.position.x /
-        getBlockSize().x;
+        blockSize.x;
   }
 
-  static Vector2 getBlockSize() {
+  static Vector2 get blockSize {
     return Vector2.all(getScreenSize().width / chunkWidth) * 0.6;
     //return Vector2.all(30); //* SOLO PER DEBUG
+  }
+
+  static double get gravity {
+    return 0.8 * blockSize.x;
   }
 
   static int get currentChunk {

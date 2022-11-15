@@ -25,7 +25,7 @@ class Blockcomponent extends SpriteComponent {
   @override
   void onGameResize(Vector2 newScreenSize) {
     super.onGameResize(newScreenSize);
-    size = GameMethods.getBlockSize();
+    size = GameMethods.blockSize;
     position = Vector2(
         size.x * blockIndex.x, size.y * blockIndex.y); //* valore iniziale
   }
