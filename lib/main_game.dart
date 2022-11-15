@@ -1,10 +1,14 @@
 import 'dart:developer';
 
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:minecraft/components/block_component.dart';
 import 'package:minecraft/components/player_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
+import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/global/world_data.dart';
 import 'package:minecraft/resources/bloks.dart';
 import 'package:minecraft/utils/chunk_generator_methods.dart';
@@ -13,7 +17,8 @@ import 'package:minecraft/utils/game_methods.dart';
 
 import 'utils/typedefs.dart';
 
-class MainGame extends FlameGame with HasCollisionDetection {
+class MainGame extends FlameGame
+    with HasCollisionDetection, HasKeyboardHandlerComponents {
   final WorldData worldData; //*riceve i dati del mondo da un launcher
 
   MainGame({required this.worldData}) {
@@ -45,6 +50,35 @@ class MainGame extends FlameGame with HasCollisionDetection {
     // renderChunk(ChunkGenerationMethods.generateChunk());
 
     add(playerComponent);
+  }
+
+  @override
+  KeyEventResult onKeyEvent(
+    RawKeyEvent event,
+    Set<LogicalKeyboardKey> keysPressed,
+  ) {
+    super.onKeyEvent(event, keysPressed);
+    //* a destra
+    if (keysPressed.contains(LogicalKeyboardKey.arrowRight) ||
+        keysPressed.contains(LogicalKeyboardKey.keyD)) {
+      worldData.playerData.motionState = ComponentMotionState.walkingRight;
+    }
+    //*a sinistra
+    if (keysPressed.contains(LogicalKeyboardKey.arrowLeft) ||
+        keysPressed.contains(LogicalKeyboardKey.keyA)) {
+      worldData.playerData.motionState = ComponentMotionState.walkingLeft;
+    }
+    //*JUMP
+    if (keysPressed.contains(LogicalKeyboardKey.space) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowUp) ||
+        keysPressed.contains(LogicalKeyboardKey.keyW)) {
+      worldData.playerData.motionState = ComponentMotionState.jumping;
+    }
+    if (keysPressed.isEmpty) {
+      //*non premo nulla
+      worldData.playerData.motionState = ComponentMotionState.idle;
+    }
+    return KeyEventResult.ignored;
   }
 
   void renderChunk(int chunkIndex) {
