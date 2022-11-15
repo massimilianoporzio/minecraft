@@ -30,14 +30,14 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     //*player y position is at the feet! (Anchor bottomCenter)
     intersectionPoints.forEach((Vector2 individualIntesectionPoint) {
       //*sottraggo 30% altezza del player pixel per essere sicuro
-      if (individualIntesectionPoint.y > (position.y - size.y * 0.3) &&
+      if (individualIntesectionPoint.y > (position.y - (size.y * 0.3)) &&
           //* area di intersezione > del 30% della base del player
           (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
               size.x * 0.4) {
         isCollidingBottom = true;
       }
       //*DX SINISTRA (above = minore! 0 sta in cima)
-      if (individualIntesectionPoint.y < (position.y - size.y * 0.3)) {
+      if (individualIntesectionPoint.y < (position.y - (size.y * 0.3))) {
         log("COLLIDING HORIZONTALLY");
         //*check isFacingRight
         if (individualIntesectionPoint.x > position.x) {
