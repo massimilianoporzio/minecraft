@@ -19,6 +19,8 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   bool isFacingRight = true;
   double yVelocity = 0; //falling in the y axis
 
+  double jumpForce = 0;
+
   bool isCollidingBottom = false;
   bool isCollidingLeft = false;
   bool isCollidingRight = false;
@@ -35,6 +37,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
           (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
               size.x * 0.4) {
         isCollidingBottom = true;
+        yVelocity = 0; //*si cade da "fermi"
       }
       //*DX SINISTRA (above = minore! 0 sta in cima)
       if (individualIntesectionPoint.y < (position.y - (size.y * 0.3))) {
@@ -109,7 +112,13 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     super.update(dt);
     movementLogic(dt);
     fallingLogic(dt);
+
     setAllCollisionToFalse(); //*resetting
+    if (jumpForce > 0) {
+      //*STO SALTANDO
+      position.y -= jumpForce;
+      jumpForce -= GameMethods.blockSize.x * 0.15;
+    }
   }
 
   void setAllCollisionToFalse() {
@@ -172,6 +181,10 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     }
     if (playerData.motionState == ComponentMotionState.idle) {
       animation = idleAnimation;
+    }
+    if (playerData.motionState == ComponentMotionState.jumping) {
+      print("Player is Jumoping");
+      jumpForce = GameMethods.blockSize.x;
     }
   }
 }

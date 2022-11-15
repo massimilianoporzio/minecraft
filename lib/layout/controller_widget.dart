@@ -21,7 +21,7 @@ class ControllerWidget extends StatelessWidget {
           ControllerButton(
             path: "assets/controller/left_button.png",
             onTap: () {
-              log("Controller left button has been pressed");
+              // log("Controller left button has been pressed");
               //CAMBIO LO STATO
               mainGame.worldData.playerData.motionState =
                   ComponentMotionState.walkingLeft;
@@ -32,7 +32,7 @@ class ControllerWidget extends StatelessWidget {
             onTap: () {
               log("Controller center button has been pressed");
               mainGame.worldData.playerData.motionState =
-                  ComponentMotionState.idle;
+                  ComponentMotionState.jumping;
             },
           ),
           ControllerButton(
