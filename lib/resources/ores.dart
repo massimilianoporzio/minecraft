@@ -9,4 +9,5 @@ class Ore {
   static Ore coalOre = Ore(block: Blocks.coalOre, rarity: 90);
   static Ore goldOre = Ore(block: Blocks.goldOre, rarity: 60);
   static Ore diamondOre = Ore(block: Blocks.diamondOre, rarity: 55);
+  static Ore lolliteOre = Ore(block: Blocks.lollite, rarity: 54);
 }

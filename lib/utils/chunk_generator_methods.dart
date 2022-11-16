@@ -82,6 +82,7 @@ un chunk ha 25 rows and 16 columns
     chunk = addOretoChunck(chunk, Ore.coalOre);
     chunk = addOretoChunck(chunk, Ore.goldOre);
     chunk = addOretoChunck(chunk, Ore.diamondOre);
+    chunk = addOretoChunck(chunk, Ore.lolliteOre);
     // //the 5th  y level grass
     // //* uso asMap così ho l'indicedi ogni riga
     // chunk.asMap().forEach((int riga, List<Blocks?> rigadiBlocks) {
@@ -196,6 +197,10 @@ un chunk ha 25 rows and 16 columns
             Ores.contains(chunk[rowOfProcessedNoiseIndex][index])) {
           if (value < ore.rarity) {
             if (ore.block == Blocks.diamondOre) {
+              chunk[rowOfProcessedNoiseIndex < 20
+                  ? 23
+                  : rowOfProcessedNoiseIndex][index] = ore.block;
+            } else if (ore.block == Blocks.lollite) {
               chunk[rowOfProcessedNoiseIndex < 20
                   ? 24
                   : rowOfProcessedNoiseIndex][index] = ore.block;

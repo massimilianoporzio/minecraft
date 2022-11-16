@@ -18,7 +18,7 @@ import 'package:minecraft/utils/game_methods.dart';
 import 'utils/typedefs.dart';
 
 class MainGame extends FlameGame
-    with HasCollisionDetection, HasKeyboardHandlerComponents {
+    with HasCollisionDetection, HasKeyboardHandlerComponents, HasTappables {
   final WorldData worldData; //*riceve i dati del mondo da un launcher
 
   MainGame({required this.worldData}) {
@@ -26,6 +26,19 @@ class MainGame extends FlameGame
     globalGameReference.mainGameRef = this;
   }
   //*SIAMO NEL MAIN, il componente "root"
+  //TAPPABLE per i click
+  @override
+  void onTapDown(int pointerId, TapDownInfo info) {
+    super.onTapDown(pointerId, info);
+    Vector2 blockPlacingPosition =
+        GameMethods.getIndexPostionFromPixels(info.eventPosition.game);
+    add(Blockcomponent(
+        block: Blocks.dirt,
+        blockIndex: blockPlacingPosition,
+        chunkIndex:
+            GameMethods.getChunkIndexFromPositionIndex(blockPlacingPosition)));
+  }
+
   //qui creo una istanza e la metto a disposizione di tutti i componenti (getX)
   GlobalGameReference globalGameReference = Get.put(GlobalGameReference());
 

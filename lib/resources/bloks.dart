@@ -21,6 +21,7 @@ enum Blocks {
   craftingTable,
   cobblestone,
   bedrock,
+  lollite
 }
 //* SONO NELL'ORDINE IN CUI LI TROVO NELLO SPRITESHEET!
 

@@ -18,8 +18,8 @@ class GameMethods {
   }
 
   static Vector2 get blockSize {
-    return Vector2.all(getScreenSize().width / chunkWidth) * 0.6;
-    //return Vector2.all(30); //* SOLO PER DEBUG
+    //return Vector2.all(getScreenSize().width / chunkWidth) * 0.6;
+    return Vector2.all(30); //* SOLO PER DEBUG
   }
 
   static double get gravity {
@@ -129,5 +129,16 @@ class GameMethods {
       }
     }
     return processedNoise;
+  }
+
+  static int getChunkIndexFromPositionIndex(Vector2 positionIndex) {
+    int index = positionIndex.x ~/ chunkWidth;
+    print("CHUNK INDEX IS: $index");
+    return index;
+  }
+
+  static Vector2 getIndexPostionFromPixels(Vector2 clickPosition) {
+    return Vector2((clickPosition.x / blockSize.x).floorToDouble(),
+        (clickPosition.y / blockSize.y).floorToDouble());
   }
 }
