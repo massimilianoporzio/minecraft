@@ -2,6 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/bloks.dart';
 import 'package:minecraft/utils/constants.dart';
@@ -15,6 +16,11 @@ class GameMethods {
   static double get playerXIndexPosition {
     return GlobalGameReference.instance.mainGameRef.playerComponent.position.x /
         blockSize.x;
+  }
+
+  static double get playerYIndexPosition {
+    return GlobalGameReference.instance.mainGameRef.playerComponent.position.y /
+        blockSize.y;
   }
 
   static Vector2 get blockSize {
@@ -155,5 +161,24 @@ class GameMethods {
               .leftWorldChunk[blockIndex.y.toInt()]
           [blockIndex.x.toInt().abs() - 1] = block; //* -1 a sinistra
     }
+  }
+
+  static bool playerIsWithinReach(Vector2 positionIndex) {
+    bool isPositionLeftToPlayer = positionIndex.x < playerXIndexPosition;
+    bool isPositionTopToPlayer =
+        positionIndex.y < playerYIndexPosition - GameMethods.blockSize.y;
+    print("isLeft?: $isPositionLeftToPlayer");
+    print("isTop?: $isPositionTopToPlayer");
+
+    int reach = (isPositionLeftToPlayer || isPositionTopToPlayer)
+        ? maxReach + 1
+        : maxReach;
+    print("reach is $reach");
+
+    if ((positionIndex.x - playerXIndexPosition).abs() < reach &&
+        (positionIndex.y - playerYIndexPosition).abs() < reach) {
+      return true;
+    }
+    return false;
   }
 }

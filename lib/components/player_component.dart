@@ -37,11 +37,14 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
           (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
               size.x * 0.4) {
         isCollidingBottom = true;
+        // log("is collidin bottom and");
+        // position.y = GameMethods.getIndexPostionFromPixels(other.position).y;
         yVelocity = 0; //*si cade da "fermi"
       }
       //*DX SINISTRA (above = minore! 0 sta in cima)
       if (individualIntesectionPoint.y < (position.y - (size.y * 0.3))) {
-        log("COLLIDING HORIZONTALLY");
+        // log("COLLIDING HORIZONTALLY");
+        // log("is colliding horizontally");
         //*check isFacingRight
         if (individualIntesectionPoint.x > position.x) {
           isCollidingRight = true;
@@ -98,11 +101,16 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 //*solo fino a una certa velocità
       if (yVelocity < GameMethods.gravity * dt * 5) {
         position.y += yVelocity - 0.3 * size.y; //*each dt step y = yVelocity*dt
+
+        // position.y = GameMethods.getIndexPostionFromPixels(position).y;
         //*correggo
         yVelocity += GameMethods.gravity * dt; //*dV/dt costante
       } else {
         position.y += yVelocity; //*not increasing
+        // position.y = GameMethods.getIndexPostionFromPixels(position).y;
       }
+    } else {
+      // position.y -= -0.3 * size.y;
     }
   }
 
@@ -112,8 +120,9 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     super.update(dt);
     movementLogic(dt);
     fallingLogic(dt);
-
+    // position.y = (GameMethods.getIndexPostionFromPixels(position).y);
     setAllCollisionToFalse(); //*resetting
+
     if (jumpForce > 0) {
       //*STO SALTANDO
       position.y -= jumpForce;

@@ -33,19 +33,27 @@ class MainGame extends FlameGame
 
   PlayerComponent playerComponent = PlayerComponent();
 
+  void placeBlockLogic(Vector2 blockPlacingPosition) {
+    //*logic
+    if (blockPlacingPosition.y > 0 &&
+        blockPlacingPosition.y < chunkHeight &&
+        GameMethods.playerIsWithinReach(blockPlacingPosition)) {
+//*replace
+      GameMethods.replaceBlockAtWorldChuncks(Blocks.dirt, blockPlacingPosition);
+      add(Blockcomponent(
+          block: Blocks.dirt,
+          blockIndex: blockPlacingPosition,
+          chunkIndex: GameMethods.getChunkIndexFromPositionIndex(
+              blockPlacingPosition)));
+    }
+  }
+
   @override
   void onTapDown(int pointerId, TapDownInfo info) {
     super.onTapDown(pointerId, info);
     Vector2 blockPlacingPosition =
         GameMethods.getIndexPostionFromPixels(info.eventPosition.game);
-
-    //*replace
-    GameMethods.replaceBlockAtWorldChuncks(Blocks.dirt, blockPlacingPosition);
-    add(Blockcomponent(
-        block: Blocks.dirt,
-        blockIndex: blockPlacingPosition,
-        chunkIndex:
-            GameMethods.getChunkIndexFromPositionIndex(blockPlacingPosition)));
+    placeBlockLogic(blockPlacingPosition);
   }
 
   @override
