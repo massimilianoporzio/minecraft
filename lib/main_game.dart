@@ -27,11 +27,20 @@ class MainGame extends FlameGame
   }
   //*SIAMO NEL MAIN, il componente "root"
   //TAPPABLE per i click
+
+  //qui creo una istanza e la metto a disposizione di tutti i componenti (getX)
+  GlobalGameReference globalGameReference = Get.put(GlobalGameReference());
+
+  PlayerComponent playerComponent = PlayerComponent();
+
   @override
   void onTapDown(int pointerId, TapDownInfo info) {
     super.onTapDown(pointerId, info);
     Vector2 blockPlacingPosition =
         GameMethods.getIndexPostionFromPixels(info.eventPosition.game);
+
+    //*replace
+    GameMethods.replaceBlockAtWorldChuncks(Blocks.dirt, blockPlacingPosition);
     add(Blockcomponent(
         block: Blocks.dirt,
         blockIndex: blockPlacingPosition,
@@ -39,10 +48,6 @@ class MainGame extends FlameGame
             GameMethods.getChunkIndexFromPositionIndex(blockPlacingPosition)));
   }
 
-  //qui creo una istanza e la metto a disposizione di tutti i componenti (getX)
-  GlobalGameReference globalGameReference = Get.put(GlobalGameReference());
-
-  PlayerComponent playerComponent = PlayerComponent();
   @override
   Future<void>? onLoad() async {
     super.onLoad();
@@ -70,6 +75,7 @@ class MainGame extends FlameGame
     RawKeyEvent event,
     Set<LogicalKeyboardKey> keysPressed,
   ) {
+    print(keysPressed);
     super.onKeyEvent(event, keysPressed);
     //* a destra
     if (keysPressed.contains(LogicalKeyboardKey.arrowRight) ||

@@ -132,7 +132,9 @@ class GameMethods {
   }
 
   static int getChunkIndexFromPositionIndex(Vector2 positionIndex) {
-    int index = positionIndex.x ~/ chunkWidth;
+    int index = positionIndex.x >= 0
+        ? (positionIndex.x ~/ chunkWidth)
+        : (positionIndex.x ~/ chunkWidth) - 1;
     print("CHUNK INDEX IS: $index");
     return index;
   }
@@ -140,5 +142,18 @@ class GameMethods {
   static Vector2 getIndexPostionFromPixels(Vector2 clickPosition) {
     return Vector2((clickPosition.x / blockSize.x).floorToDouble(),
         (clickPosition.y / blockSize.y).floorToDouble());
+  }
+
+  static void replaceBlockAtWorldChuncks(Blocks? block, Vector2 blockIndex) {
+    if (blockIndex.x >= 0) {
+      //*replace in the rightWorldChunck
+      GlobalGameReference.instance.mainGameRef.worldData
+          .rightWorldChunk[blockIndex.y.toInt()][blockIndex.x.toInt()] = block;
+    } else {
+      //*in leftworldchunk
+      GlobalGameReference.instance.mainGameRef.worldData
+              .leftWorldChunk[blockIndex.y.toInt()]
+          [blockIndex.x.toInt().abs() - 1] = block; //* -1 a sinistra
+    }
   }
 }
