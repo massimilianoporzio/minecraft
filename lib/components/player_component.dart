@@ -4,6 +4,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
+import 'package:minecraft/components/block_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/global/world_data.dart';
@@ -20,10 +21,14 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   double yVelocity = 0; //falling in the y axis
 
   double jumpForce = 0;
+  double localPlayerSpeed = 0;
+
+  bool refreshSpeed = false;
 
   bool isCollidingBottom = false;
   bool isCollidingLeft = false;
   bool isCollidingRight = false;
+  bool isCollidingTop = false;
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
@@ -40,6 +45,15 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
         // log("is collidin bottom and");
         // position.y = GameMethods.getIndexPostionFromPixels(other.position).y;
         yVelocity = 0; //*si cade da "fermi"
+      }
+      //*TOP
+      if (individualIntesectionPoint.y < (position.y - (size.y * 0.75)) &&
+          //* area di intersezione > del 30% della base del player
+          (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
+              size.x * 0.4 &&
+          jumpForce > 0) {
+        //*STIAMO SALTANDO E ABBIAMO TOCCATO IN ALTO
+        isCollidingTop = true;
       }
       //*DX SINISTRA (above = minore! 0 sta in cima)
       if (individualIntesectionPoint.y < (position.y - (size.y * 0.3))) {
@@ -70,6 +84,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 
   @override
   Future<void>? onLoad() async {
+    log("LOADING");
     super.onLoad();
     add(RectangleHitbox());
     priority = 2; //SULLO STACK VISIVO
@@ -93,14 +108,21 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     // size = Vector2(100, 100);
     position = Vector2(100, 400);
     animation = idleAnimation;
+    //*refresh localspeed con timer
+    add(TimerComponent(
+        period: 1,
+        repeat: true,
+        onTick: () {
+          refreshSpeed = true;
+        }));
   }
 
   void fallingLogic(double dt) {
     //!SOLO se non cado
     if (!isCollidingBottom) {
 //*solo fino a una certa velocità
-      if (yVelocity < GameMethods.gravity * dt * 5) {
-        position.y += yVelocity - 0.3 * size.y; //*each dt step y = yVelocity*dt
+      if (yVelocity < (GameMethods.gravity * dt) * 10) {
+        position.y += yVelocity; //*each dt step y = yVelocity*dt
 
         // position.y = GameMethods.getIndexPostionFromPixels(position).y;
         //*correggo
@@ -110,7 +132,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
         // position.y = GameMethods.getIndexPostionFromPixels(position).y;
       }
     } else {
-      // position.y -= -0.3 * size.y;
+      // position.y = (position.y / GameMethods.blockSize.y).floorToDouble();
     }
   }
 
@@ -120,13 +142,23 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     super.update(dt);
     movementLogic(dt);
     fallingLogic(dt);
-    // position.y = (GameMethods.getIndexPostionFromPixels(position).y);
+    jumpingLogic();
     setAllCollisionToFalse(); //*resetting
+    if (refreshSpeed) {
+      localPlayerSpeed = (playerSpeed * GameMethods.blockSize.x) * dt;
+      refreshSpeed = false; //reset
+    }
+  }
 
+  void jumpingLogic() {
     if (jumpForce > 0) {
       //*STO SALTANDO
       position.y -= jumpForce;
       jumpForce -= GameMethods.blockSize.x * 0.15;
+      //*SE TOCCO SMETTO DI SALTARE
+      if (isCollidingTop) {
+        jumpForce = 0;
+      }
     }
   }
 
@@ -134,6 +166,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     isCollidingBottom =
         false; //*reset per vedere cosa succede al prossimo frame
     isCollidingLeft = false;
+    isCollidingTop = false;
     isCollidingRight = false; //*resetting
   }
 
@@ -148,7 +181,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     switch (componentMotionState) {
       case ComponentMotionState.walkingLeft:
         if (!isCollidingLeft) {
-          position.x -= (playerSpeed * GameMethods.blockSize.x) * dt;
+          position.x -= localPlayerSpeed;
           animation = walkingAnimation;
           if (isFacingRight) {
             flipHorizontallyAroundCenter();
@@ -159,7 +192,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
         break;
       case ComponentMotionState.walkingRight:
         if (!isCollidingRight) {
-          position.x += (playerSpeed * GameMethods.blockSize.x) * dt;
+          position.x += localPlayerSpeed;
           if (!isFacingRight) {
             flipHorizontallyAroundCenter();
             isFacingRight = true;
@@ -191,9 +224,9 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     if (playerData.motionState == ComponentMotionState.idle) {
       animation = idleAnimation;
     }
-    if (playerData.motionState == ComponentMotionState.jumping) {
-      print("Player is Jumoping");
-      jumpForce = GameMethods.blockSize.x;
+    if (playerData.motionState == ComponentMotionState.jumping &&
+        isCollidingBottom) {
+      jumpForce = GameMethods.blockSize.x * 0.75;
     }
   }
 }

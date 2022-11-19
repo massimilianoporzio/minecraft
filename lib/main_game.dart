@@ -37,7 +37,9 @@ class MainGame extends FlameGame
     //*logic
     if (blockPlacingPosition.y > 0 &&
         blockPlacingPosition.y < chunkHeight &&
-        GameMethods.playerIsWithinReach(blockPlacingPosition)) {
+        GameMethods.playerIsWithinReach(blockPlacingPosition) &&
+        GameMethods.getBlockAtIndexPosition(blockPlacingPosition) == null &&
+        GameMethods.adjacentBlockExists(blockPlacingPosition)) {
 //*replace
       GameMethods.replaceBlockAtWorldChuncks(Blocks.dirt, blockPlacingPosition);
       add(Blockcomponent(

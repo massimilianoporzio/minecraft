@@ -8,6 +8,8 @@ import 'package:minecraft/resources/bloks.dart';
 import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/typedefs.dart';
 
+enum Direction { top, bottom, left, right }
+
 class GameMethods {
   static GameMethods get instance {
     return GameMethods();
@@ -24,8 +26,8 @@ class GameMethods {
   }
 
   static Vector2 get blockSize {
-    //return Vector2.all(getScreenSize().width / chunkWidth) * 0.6;
-    return Vector2.all(30); //* SOLO PER DEBUG
+    return Vector2.all(getScreenSize().width / chunkWidth) * 0.6;
+    //return Vector2.all(30); //* SOLO PER DEBUG
   }
 
   static double get gravity {
@@ -167,16 +169,78 @@ class GameMethods {
     bool isPositionLeftToPlayer = positionIndex.x < playerXIndexPosition;
     bool isPositionTopToPlayer =
         positionIndex.y < playerYIndexPosition - GameMethods.blockSize.y;
-    print("isLeft?: $isPositionLeftToPlayer");
-    print("isTop?: $isPositionTopToPlayer");
+    // print("isLeft?: $isPositionLeftToPlayer");
+    // print("isTop?: $isPositionTopToPlayer");
 
     int reach = (isPositionLeftToPlayer || isPositionTopToPlayer)
         ? maxReach + 1
         : maxReach;
-    print("reach is $reach");
+    // print("reach is $reach");
 
     if ((positionIndex.x - playerXIndexPosition).abs() < reach &&
         (positionIndex.y - playerYIndexPosition).abs() < reach) {
+      return true;
+    }
+    return false;
+  }
+
+  static Blocks? getBlockAtIndexPosition(Vector2 blockIndex) {
+    if (blockIndex.x >= 0) {
+      return GlobalGameReference.instance.mainGameRef.worldData
+          .rightWorldChunk[blockIndex.y.toInt()][blockIndex.x.toInt()];
+    } else {
+      //*in leftworldchunk
+      return GlobalGameReference.instance.mainGameRef.worldData
+              .leftWorldChunk[blockIndex.y.toInt()]
+          [blockIndex.x.toInt().abs() - 1]; //* -1 a sinistra
+    }
+  }
+
+  static Blocks? getBlockAtDirection(Vector2 blockIndex, Direction direction) {
+    switch (direction) {
+      case Direction.top:
+        //* dentro truy che ai bordi va in errore
+        try {
+          return getBlockAtIndexPosition(
+              Vector2(blockIndex.x, blockIndex.y - 1));
+        } catch (e) {
+          break;
+        }
+
+      case Direction.bottom:
+        try {
+          return getBlockAtIndexPosition(
+              Vector2(blockIndex.x, blockIndex.y + 1));
+        } catch (e) {
+          break;
+        }
+      case Direction.left:
+        try {
+          return getBlockAtIndexPosition(
+              Vector2(blockIndex.x - 1, blockIndex.y));
+        } catch (e) {
+          break;
+        }
+      case Direction.right:
+        try {
+          return getBlockAtIndexPosition(
+              Vector2(blockIndex.x + 1, blockIndex.y));
+        } catch (e) {
+          break;
+        }
+    }
+    return null;
+  }
+
+  static bool adjacentBlockExists(Vector2 blockIndex) {
+    //*TOP
+    if (getBlockAtDirection(blockIndex, Direction.top) is Blocks) {
+      return true;
+    } else if (getBlockAtDirection(blockIndex, Direction.bottom) is Blocks) {
+      return true;
+    } else if (getBlockAtDirection(blockIndex, Direction.left) is Blocks) {
+      return true;
+    } else if (getBlockAtDirection(blockIndex, Direction.right) is Blocks) {
       return true;
     }
     return false;
