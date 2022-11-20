@@ -12,6 +12,8 @@ import 'package:minecraft/main_game.dart';
 import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
+import '../resources/bloks.dart';
+
 //ANIMATED SPRITE!
 class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   final Vector2 playerDimensions = Vector2(60, 60); //* src Size
@@ -30,9 +32,19 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   bool isCollidingRight = false;
   bool isCollidingTop = false;
 
+  bool isBackground = false;
+
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is BlockComponent) {
+      Blocks block = (other).block;
+      if (Piante.contains(block)) {
+        // log("SFOnDO");
+
+      }
+    }
     super.onCollision(intersectionPoints, other);
+
     //* loop over intersection points
     //*player y position is at the feet! (Anchor bottomCenter)
     intersectionPoints.forEach((Vector2 individualIntesectionPoint) {
@@ -40,10 +52,13 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
       if (individualIntesectionPoint.y > (position.y - (size.y * 0.3)) &&
           //* area di intersezione > del 30% della base del player
           (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
-              size.x * 0.4) {
+              size.x * 0.4 &&
+          !isBackground) {
+        //*guardo che blocco è
+
         isCollidingBottom = true;
         // log("is collidin bottom and");
-        // position.y = GameMethods.getIndexPostionFromPixels(other.position).y;
+        // position.y = other.position.y;
         yVelocity = 0; //*si cade da "fermi"
       }
       //*TOP
@@ -51,12 +66,14 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
           //* area di intersezione > del 30% della base del player
           (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
               size.x * 0.4 &&
+          !isBackground &&
           jumpForce > 0) {
         //*STIAMO SALTANDO E ABBIAMO TOCCATO IN ALTO
         isCollidingTop = true;
       }
       //*DX SINISTRA (above = minore! 0 sta in cima)
-      if (individualIntesectionPoint.y < (position.y - (size.y * 0.3))) {
+      if (individualIntesectionPoint.y < (position.y - (size.y * 0.3)) &&
+          !isBackground) {
         // log("COLLIDING HORIZONTALLY");
         // log("is colliding horizontally");
         //*check isFacingRight
@@ -131,9 +148,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
         position.y += yVelocity; //*not increasing
         // position.y = GameMethods.getIndexPostionFromPixels(position).y;
       }
-    } else {
-      // position.y = (position.y / GameMethods.blockSize.y).floorToDouble();
-    }
+    } else {}
   }
 
   //* come animare?
@@ -167,6 +182,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
         false; //*reset per vedere cosa succede al prossimo frame
     isCollidingLeft = false;
     isCollidingTop = false;
+    isBackground = false;
     isCollidingRight = false; //*resetting
   }
 
@@ -226,7 +242,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     }
     if (playerData.motionState == ComponentMotionState.jumping &&
         isCollidingBottom) {
-      jumpForce = GameMethods.blockSize.x * 0.75;
+      jumpForce = GameMethods.blockSize.x * 1;
     }
   }
 }

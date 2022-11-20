@@ -4,12 +4,12 @@ import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/bloks.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
-class Blockcomponent extends SpriteComponent {
+class BlockComponent extends SpriteComponent {
   final Blocks block;
   final Vector2 blockIndex;
   final int chunkIndex; //* di che chunk fa parte
 
-  Blockcomponent(
+  BlockComponent(
       {required this.block,
       required this.blockIndex,
       required this.chunkIndex});

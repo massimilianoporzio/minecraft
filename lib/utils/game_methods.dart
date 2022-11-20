@@ -143,7 +143,7 @@ class GameMethods {
     int index = positionIndex.x >= 0
         ? (positionIndex.x ~/ chunkWidth)
         : (positionIndex.x ~/ chunkWidth) - 1;
-    print("CHUNK INDEX IS: $index");
+    // print("CHUNK INDEX IS: $index");
     return index;
   }
 

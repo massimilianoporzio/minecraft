@@ -26,3 +26,11 @@ enum Blocks {
 //* SONO NELL'ORDINE IN CUI LI TROVO NELLO SPRITESHEET!
 
 List Ores = [Blocks.coalOre, Blocks.goldOre, Blocks.ironOre, Blocks.diamondOre];
+List Piante = [
+  Blocks.deadBush,
+  Blocks.redFlower,
+  Blocks.whiteFlower,
+  Blocks.purpleFlower,
+  Blocks.yellowFlower,
+  Blocks.drippingWhiteFlower
+];

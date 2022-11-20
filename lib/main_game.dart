@@ -42,7 +42,7 @@ class MainGame extends FlameGame
         GameMethods.adjacentBlockExists(blockPlacingPosition)) {
 //*replace
       GameMethods.replaceBlockAtWorldChuncks(Blocks.dirt, blockPlacingPosition);
-      add(Blockcomponent(
+      add(BlockComponent(
           block: Blocks.dirt,
           blockIndex: blockPlacingPosition,
           chunkIndex: GameMethods.getChunkIndexFromPositionIndex(
@@ -118,7 +118,7 @@ class MainGame extends FlameGame
     chunk.asMap().forEach((int yIndex, List<Blocks?> rowOfBlocks) {
       rowOfBlocks.asMap().forEach((int xIndex, Blocks? block) {
         if (block != null) {
-          add(Blockcomponent(
+          add(BlockComponent(
               block: block,
               chunkIndex: chunkIndex,
               blockIndex: Vector2(chunkIndex * chunkWidth + xIndex.toDouble(),
