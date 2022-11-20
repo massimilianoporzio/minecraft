@@ -5,6 +5,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:minecraft/components/block_breaking_component.dart';
 import 'package:minecraft/components/block_component.dart';
 import 'package:minecraft/components/player_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
@@ -62,6 +63,7 @@ class MainGame extends FlameGame
   Future<void>? onLoad() async {
     super.onLoad();
     camera.followComponent(playerComponent);
+
     //* creo tre chunk uno dietro l'altro
     GameMethods.addChunkToWorldChunks(
         ChunkGenerationMethods.generateChunk(-1), false); //chunck sinistro
@@ -85,7 +87,7 @@ class MainGame extends FlameGame
     RawKeyEvent event,
     Set<LogicalKeyboardKey> keysPressed,
   ) {
-    print(keysPressed);
+    // print(keysPressed);
     super.onKeyEvent(event, keysPressed);
     //* a destra
     if (keysPressed.contains(LogicalKeyboardKey.arrowRight) ||
