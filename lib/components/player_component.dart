@@ -32,17 +32,8 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   bool isCollidingRight = false;
   bool isCollidingTop = false;
 
-  bool isBackground = false;
-
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is BlockComponent) {
-      Blocks block = (other).block;
-      if (Piante.contains(block)) {
-        // log("SFOnDO");
-
-      }
-    }
     super.onCollision(intersectionPoints, other);
 
     //* loop over intersection points
@@ -50,13 +41,14 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     intersectionPoints.forEach((Vector2 individualIntesectionPoint) {
       //*sottraggo 30% altezza del player pixel per essere sicuro
       if (individualIntesectionPoint.y > (position.y - (size.y * 0.3)) &&
+
           //* area di intersezione > del 30% della base del player
           (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
-              size.x * 0.4 &&
-          !isBackground) {
+              size.x * 0.4) {
         //*guardo che blocco è
 
         isCollidingBottom = true;
+
         // log("is collidin bottom and");
         // position.y = other.position.y;
         yVelocity = 0; //*si cade da "fermi"
@@ -66,14 +58,12 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
           //* area di intersezione > del 30% della base del player
           (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
               size.x * 0.4 &&
-          !isBackground &&
           jumpForce > 0) {
         //*STIAMO SALTANDO E ABBIAMO TOCCATO IN ALTO
         isCollidingTop = true;
       }
       //*DX SINISTRA (above = minore! 0 sta in cima)
-      if (individualIntesectionPoint.y < (position.y - (size.y * 0.3)) &&
-          !isBackground) {
+      if (individualIntesectionPoint.y < (position.y - (size.y * 0.3))) {
         // log("COLLIDING HORIZONTALLY");
         // log("is colliding horizontally");
         //*check isFacingRight
@@ -102,6 +92,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   @override
   Future<void>? onLoad() async {
     log("LOADING");
+
     super.onLoad();
     add(RectangleHitbox());
     priority = 2; //SULLO STACK VISIVO
@@ -148,7 +139,13 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
         position.y += yVelocity; //*not increasing
         // position.y = GameMethods.getIndexPostionFromPixels(position).y;
       }
-    } else {}
+    } else {
+      Vector2 groundBlockPosition =
+          GameMethods.getIndexPostionFromPixels(position);
+
+      position.y =
+          (groundBlockPosition.y).floorToDouble() * GameMethods.blockSize.y;
+    }
   }
 
   //* come animare?
@@ -156,8 +153,9 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   void update(double dt) {
     super.update(dt);
     movementLogic(dt);
-    fallingLogic(dt);
     jumpingLogic();
+    fallingLogic(dt);
+
     setAllCollisionToFalse(); //*resetting
     if (refreshSpeed) {
       localPlayerSpeed = (playerSpeed * GameMethods.blockSize.x) * dt;
@@ -168,6 +166,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   void jumpingLogic() {
     if (jumpForce > 0) {
       //*STO SALTANDO
+
       position.y -= jumpForce;
       jumpForce -= GameMethods.blockSize.x * 0.15;
       //*SE TOCCO SMETTO DI SALTARE
@@ -182,7 +181,6 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
         false; //*reset per vedere cosa succede al prossimo frame
     isCollidingLeft = false;
     isCollidingTop = false;
-    isBackground = false;
     isCollidingRight = false; //*resetting
   }
 
