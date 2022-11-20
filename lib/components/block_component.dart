@@ -4,8 +4,9 @@ import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:minecraft/components/block_breaking_component.dart';
+import 'package:minecraft/components/item_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
-import 'package:minecraft/resources/bloks.dart';
+import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 class BlockComponent extends SpriteComponent with Tappable {
@@ -21,11 +22,16 @@ class BlockComponent extends SpriteComponent with Tappable {
         row: 0,
         stepTime: BlockData.getBlockDataFor(block).baseMiningSpeed / 6,
         loop: false)
-    ..animation!.onComplete = () {
-      //*rimuovo dalla lista dei chunck
-      GameMethods.replaceBlockAtWorldChuncks(null, blockIndex);
-      removeFromParent(); //*TOLGO LA ANIMAZIONE
-    };
+    ..animation!.onComplete = onBroken;
+
+  void onBroken() {
+    //*rimuovo dalla lista dei chunck
+    GameMethods.replaceBlockAtWorldChuncks(null, blockIndex);
+    //SPAWNING. add to main game
+    GlobalGameReference.instance.mainGameRef
+        .add(ItemComponent(spawnBlockIndex: blockIndex, block: block));
+    removeFromParent(); //*TOLGO LA ANIMAZIONE
+  }
 
   BlockComponent(
       {required this.block,
@@ -36,8 +42,9 @@ class BlockComponent extends SpriteComponent with Tappable {
   Future<void>? onLoad() async {
     super.onLoad();
     animationSpriteSheet = SpriteSheet(
-        image: await Flame.images
-            .load('sprite_sheets/blocks/block_breaking_sprite_sheet.png'),
+        //*meglio usare cache!
+        image: Flame.images
+            .fromCache('sprite_sheets/blocks/block_breaking_sprite_sheet.png'),
         srcSize: Vector2.all(60));
     add(RectangleHitbox()); //*collisioni
     sprite = await GameMethods.getSpriteFromBlock(block);
@@ -46,10 +53,12 @@ class BlockComponent extends SpriteComponent with Tappable {
   @override
   bool onTapDown(TapDownInfo info) {
     super.onTapDown(info);
-    //*add block animation
-    if (!blockBreakingComponent.isMounted) {
-      blockBreakingComponent.animation!.reset();
-      add(blockBreakingComponent);
+    if (BlockData.getBlockDataFor(block).breakable) {
+//*add block animation
+      if (!blockBreakingComponent.isMounted) {
+        blockBreakingComponent.animation!.reset();
+        add(blockBreakingComponent);
+      }
     }
 
     return true;

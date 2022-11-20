@@ -1,4 +1,4 @@
-import 'package:minecraft/resources/bloks.dart';
+import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/resources/structures.dart';
 
 Structure cactus = Structure(structure: [

@@ -4,7 +4,7 @@ import 'dart:math' as math;
 import 'package:fast_noise/fast_noise.dart';
 import 'package:flame/components.dart';
 import 'package:minecraft/global/global_game_reference.dart';
-import 'package:minecraft/resources/bloks.dart';
+import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/resources/structures.dart';
 import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/game_methods.dart';
@@ -83,6 +83,8 @@ un chunk ha 25 rows and 16 columns
     chunk = addOretoChunck(chunk, Ore.goldOre);
     chunk = addOretoChunck(chunk, Ore.diamondOre);
     chunk = addOretoChunck(chunk, Ore.lolliteOre);
+
+    chunk = addbedrock(chunk);
     // //the 5th  y level grass
     // //* uso asMap così ho l'indicedi ogni riga
     // chunk.asMap().forEach((int riga, List<Blocks?> rigadiBlocks) {
@@ -98,6 +100,12 @@ un chunk ha 25 rows and 16 columns
     //   }
     // });
 
+    return chunk;
+  }
+
+  static Chunk addbedrock(Chunk chunk) {
+    chunk.last.replaceRange(
+        0, chunkWidth, List.generate(chunkWidth, (index) => Blocks.bedrock));
     return chunk;
   }
 

@@ -1,4 +1,4 @@
-import '../resources/bloks.dart';
+import '../resources/blocks.dart';
 import '../resources/structures.dart';
 
 Structure birchTree = Structure(structure: [

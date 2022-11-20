@@ -1,4 +1,4 @@
-import 'package:minecraft/resources/bloks.dart';
+import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/resources/structures.dart';
 import 'package:minecraft/structures/plants.dart';
 import 'package:minecraft/structures/trees.dart';

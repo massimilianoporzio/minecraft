@@ -44,11 +44,11 @@ class BlockData {
   static BlockData soil = BlockData(isCollidable: true, baseMiningSpeed: 0.75);
   static BlockData wood = BlockData(isCollidable: false, baseMiningSpeed: 3);
   static BlockData leaf = BlockData(isCollidable: false, baseMiningSpeed: 0.35);
-  static BlockData stone = BlockData(isCollidable: true, baseMiningSpeed: 4);
+  static BlockData stone = BlockData(isCollidable: true, baseMiningSpeed: 1);
   static BlockData woodPlank =
       BlockData(isCollidable: true, baseMiningSpeed: 2.5);
   static BlockData unbreakable =
-      BlockData(isCollidable: true, baseMiningSpeed: 2.5, breakable: false);
+      BlockData(isCollidable: true, baseMiningSpeed: 1, breakable: false);
 
   BlockData(
       {this.breakable = true, //*tranne per l'ultima riga

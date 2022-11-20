@@ -1,4 +1,4 @@
-import '../resources/bloks.dart';
+import '../resources/blocks.dart';
 
 typedef Chunk = List<List<Blocks?>>;
 typedef RawNoise = List<List<double>>;

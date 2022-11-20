@@ -12,7 +12,7 @@ import 'package:minecraft/main_game.dart';
 import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
-import '../resources/bloks.dart';
+import '../resources/blocks.dart';
 
 //ANIMATED SPRITE!
 class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
@@ -104,14 +104,14 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 
     //WALKING
     playerWalkingSpriteSheet = SpriteSheet(
-        image: await Flame.images
-            .load('sprite_sheets/player/player_walking_sprite_sheet.png'),
+        image: Flame.images
+            .fromCache('sprite_sheets/player/player_walking_sprite_sheet.png'),
         //*size of the single image
         srcSize: playerDimensions);
     //IDLE
     playerIdleSpriteSheet = SpriteSheet(
-        image: await Flame.images
-            .load('sprite_sheets/player/player_idle_sprite_sheet.png'),
+        image: Flame.images
+            .fromCache('sprite_sheets/player/player_idle_sprite_sheet.png'),
         //*size of the single image
         srcSize: playerDimensions);
 

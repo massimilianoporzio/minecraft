@@ -4,7 +4,7 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:minecraft/global/global_game_reference.dart';
-import 'package:minecraft/resources/bloks.dart';
+import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/typedefs.dart';
 
@@ -27,7 +27,7 @@ class GameMethods {
 
   static Vector2 get blockSize {
     return Vector2.all(getScreenSize().width / chunkWidth) * 0.6;
-    //return Vector2.all(30); //* SOLO PER DEBUG
+    //return Vector2.all(20); //* SOLO PER DEBUG
   }
 
   static double get gravity {
@@ -48,15 +48,15 @@ class GameMethods {
     return MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
   }
 
-  static Future<SpriteSheet> getBlockSpriteSheet() async {
+  static SpriteSheet getBlockSpriteSheet() {
     return SpriteSheet(
-        image: await Flame.images
-            .load('sprite_sheets/blocks/block_sprite_sheet_mod.png'),
+        image: Flame.images
+            .fromCache('sprite_sheets/blocks/block_sprite_sheet_mod.png'),
         srcSize: Vector2.all(60));
   }
 
-  static Future<Sprite> getSpriteFromBlock(Blocks block) async {
-    SpriteSheet spriteSheet = await getBlockSpriteSheet();
+  static Sprite getSpriteFromBlock(Blocks block) {
+    SpriteSheet spriteSheet = getBlockSpriteSheet();
     return spriteSheet.getSprite(0, block.index);
   }
 
