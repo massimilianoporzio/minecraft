@@ -18,7 +18,9 @@ class BlockComponent extends SpriteComponent with Tappable {
 
   late BlockBreakingComponent blockBreakingComponent = BlockBreakingComponent()
     ..animation = animationSpriteSheet.createAnimation(
-        row: 0, stepTime: 0.15, loop: false)
+        row: 0,
+        stepTime: BlockData.getBlockDataFor(block).baseMiningSpeed / 6,
+        loop: false)
     ..animation!.onComplete = () {
       //*rimuovo dalla lista dei chunck
       GameMethods.replaceBlockAtWorldChuncks(null, blockIndex);
