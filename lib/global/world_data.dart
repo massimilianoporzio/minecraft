@@ -1,3 +1,4 @@
+import 'package:minecraft/components/item_component.dart';
 import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/game_methods.dart';
@@ -33,4 +34,5 @@ class WorldData {
   }
 
   List<int> currentlyRenderedChunks = [];
+  List<ItemComponent> items = [];
 }

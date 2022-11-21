@@ -1,6 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:minecraft/components/player_component.dart';
+import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/entity.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
@@ -36,6 +37,8 @@ class ItemComponent extends Entity {
     } else if (other is PlayerComponent) {
       //*il giocatore ci è passato sopra: lo agg all'inventario
       print("Add $block to inventory");
+      //* lo tolgo anche dalla lista globale
+      GlobalGameReference.instance.mainGameRef.worldData.items.remove(this);
       removeFromParent();
     }
   }
@@ -50,5 +53,6 @@ class ItemComponent extends Entity {
   void update(double dt) {
     super.update(dt);
     fallingLogic(dt);
+    setAllCollisionToFalse();
   }
 }

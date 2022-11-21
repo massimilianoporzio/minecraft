@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:minecraft/components/block_breaking_component.dart';
 import 'package:minecraft/components/block_component.dart';
+import 'package:minecraft/components/item_component.dart';
 import 'package:minecraft/components/player_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/player_data.dart';
@@ -130,9 +131,30 @@ class MainGame extends FlameGame
     });
   }
 
+  void itemRenderingLogic() {
+    //*guardo se ci sono items da agg (render)
+    worldData.items.asMap().forEach((int index, ItemComponent item) {
+      if (!item.isMounted) {
+        if (worldData.chunksThathShoudlBeRendered.contains(
+            GameMethods.getChunkIndexFromPositionIndex(item.spawnBlockIndex))) {
+          add(item);
+        }
+      } else {
+        //*l'indice dell'item NON è quello del chunk che viene mostrato
+        //* UN-RENDER IT!
+        if (!worldData.chunksThathShoudlBeRendered.contains(
+            GameMethods.getChunkIndexFromPositionIndex(item.spawnBlockIndex))) {
+          remove(item);
+        }
+      }
+    });
+  }
+
   @override
   void update(double dt) {
     super.update(dt);
+    itemRenderingLogic();
+
     // print(WorldData.chunksThathShoudlBeRendered);
     worldData.chunksThathShoudlBeRendered
         .asMap()
