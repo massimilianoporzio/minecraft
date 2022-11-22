@@ -70,8 +70,8 @@ class MainGame extends FlameGame
     // GameMethods.addChunkToWorldChunks(
     //     ChunkGenerationMethods.generateChunk(-1), false); //chunck sinistro
 
-    GameMethods.addChunkToWorldChunks(
-        ChunkGenerationMethods.generateChunk(0), true); // chunck centrale
+    // GameMethods.addChunkToWorldChunks(
+    //     ChunkGenerationMethods.generateChunk(0), true); // chunck centrale
     // GameMethods.addChunkToWorldChunks(
     //     ChunkGenerationMethods.generateChunk(1), true); // chunck destro
     //li mostro
