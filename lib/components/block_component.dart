@@ -13,6 +13,7 @@ class BlockComponent extends SpriteComponent with Tappable {
   final Blocks block;
   final Vector2 blockIndex;
   final int chunkIndex; //* di che chunk fa parte
+  final String blockID = DateTime.now().toString();
 
   //*ogni blocco ha un'istanza sua del breaking
   late SpriteSheet animationSpriteSheet;
@@ -52,7 +53,8 @@ class BlockComponent extends SpriteComponent with Tappable {
 
   @override
   bool onTapDown(TapDownInfo info) {
-    super.onTapDown(info);
+    print("BLOCK ($blockID) COMPONENT TAP DOWN");
+
     if (BlockData.getBlockDataFor(block).breakable) {
 //*add block animation
       if (!blockBreakingComponent.isMounted) {
@@ -60,13 +62,14 @@ class BlockComponent extends SpriteComponent with Tappable {
         add(blockBreakingComponent);
       }
     }
-
+    info.handled = true;
     return true;
   }
 
   @override
   bool onTapCancel() {
     //* se lascio il componente
+    print("BLCOK TAP CANCEL");
     super.onTapCancel();
     //* stop block breaking animation
     if (blockBreakingComponent.isMounted) {
@@ -77,6 +80,7 @@ class BlockComponent extends SpriteComponent with Tappable {
 
   @override
   bool onTapUp(TapUpInfo info) {
+    print("BLCOK TAP UP");
     super.onTapUp(info);
     //* stop block breaking animation
     if (blockBreakingComponent.isMounted) {

@@ -54,6 +54,7 @@ class MainGame extends FlameGame
 
   @override
   void onTapDown(int pointerId, TapDownInfo info) {
+    print("MAIN GAME TAP DOWN");
     super.onTapDown(pointerId, info);
     Vector2 blockPlacingPosition =
         GameMethods.getIndexPostionFromPixels(info.eventPosition.game);
@@ -66,17 +67,17 @@ class MainGame extends FlameGame
     camera.followComponent(playerComponent);
 
     //* creo tre chunk uno dietro l'altro
-    GameMethods.addChunkToWorldChunks(
-        ChunkGenerationMethods.generateChunk(-1), false); //chunck sinistro
+    // GameMethods.addChunkToWorldChunks(
+    //     ChunkGenerationMethods.generateChunk(-1), false); //chunck sinistro
 
     GameMethods.addChunkToWorldChunks(
         ChunkGenerationMethods.generateChunk(0), true); // chunck centrale
-    GameMethods.addChunkToWorldChunks(
-        ChunkGenerationMethods.generateChunk(1), true); // chunck destro
+    // GameMethods.addChunkToWorldChunks(
+    //     ChunkGenerationMethods.generateChunk(1), true); // chunck destro
     //li mostro
-    renderChunk(-1);
-    renderChunk(0);
-    renderChunk(1);
+    // renderChunk(-1);
+    // renderChunk(0);
+    // renderChunk(1);
 
     // renderChunk(ChunkGenerationMethods.generateChunk());
 
