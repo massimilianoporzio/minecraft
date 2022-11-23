@@ -41,14 +41,16 @@ class MainGame extends FlameGame
         blockPlacingPosition.y < chunkHeight &&
         GameMethods.playerIsWithinReach(blockPlacingPosition) &&
         GameMethods.getBlockAtIndexPosition(blockPlacingPosition) == null &&
-        GameMethods.adjacentBlockExists(blockPlacingPosition)) {
+        GameMethods.adjacentBlockExists(blockPlacingPosition) &&
+        worldData.inventoryManager.inventorySlots[0].block != null) {
 //*replace
       GameMethods.replaceBlockAtWorldChuncks(Blocks.dirt, blockPlacingPosition);
       add(BlockComponent(
-          block: Blocks.dirt,
+          block: worldData.inventoryManager.inventorySlots[0].block!,
           blockIndex: blockPlacingPosition,
           chunkIndex: GameMethods.getChunkIndexFromPositionIndex(
               blockPlacingPosition)));
+      worldData.inventoryManager.inventorySlots[0].decrementSlot();
     }
   }
 

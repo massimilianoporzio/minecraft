@@ -53,4 +53,11 @@ class InventorySlot {
     }
     return false;
   }
+
+  void decrementSlot() {
+    count--;
+    if (count == 0) {
+      block = null; //*SVUOTO
+    }
+  }
 }
