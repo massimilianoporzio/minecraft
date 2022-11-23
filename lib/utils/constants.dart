@@ -3,3 +3,5 @@ const int chunkHeight = 25; // number of block of each chunk in y
 const int playerSpeed = 4; //* bloks per second
 
 const int maxReach = 4; //* massima distanza entro cui mettere un blocco
+
+const int stack = 64; //*num max di blocchi in ogni slot

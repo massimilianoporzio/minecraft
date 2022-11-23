@@ -36,10 +36,14 @@ class ItemComponent extends Entity {
       super.onCollision(intersectionPoints, other);
     } else if (other is PlayerComponent) {
       //*il giocatore ci è passato sopra: lo agg all'inventario
-      print("Add $block to inventory");
-      //* lo tolgo anche dalla lista globale
-      GlobalGameReference.instance.mainGameRef.worldData.items.remove(this);
-      removeFromParent();
+      if (GlobalGameReference.instance.mainGameRef.worldData.inventoryManager
+          .addBlockToInventory(block)) {
+        //* lo tolgo anche dalla lista globale se è andato a buon fine nell'inventario
+        GlobalGameReference.instance.mainGameRef.worldData.items.remove(this);
+        removeFromParent();
+        print(GlobalGameReference
+            .instance.mainGameRef.worldData.inventoryManager.inventorySlots);
+      }
     }
   }
 

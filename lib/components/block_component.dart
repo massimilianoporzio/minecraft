@@ -53,7 +53,7 @@ class BlockComponent extends SpriteComponent with Tappable {
 
   @override
   bool onTapDown(TapDownInfo info) {
-    print("BLOCK ($blockID) COMPONENT TAP DOWN");
+    // print("BLOCK ($blockID) COMPONENT TAP DOWN");
 
     if (BlockData.getBlockDataFor(block).breakable) {
 //*add block animation
