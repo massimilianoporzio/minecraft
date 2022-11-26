@@ -10,7 +10,7 @@ class InventorySlotBackgroundWidget extends StatelessWidget {
     return SizedBox(
         width: GameMethods.slotSize,
         height: GameMethods.slotSize,
-        child: Image.asset(getPath(slotType)));
+        child: FittedBox(child: Image.asset(getPath(slotType))));
   }
 
   String getPath(SlotType slotType) {
