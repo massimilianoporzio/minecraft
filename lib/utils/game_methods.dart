@@ -10,6 +10,8 @@ import 'package:minecraft/utils/typedefs.dart';
 
 enum Direction { top, bottom, left, right }
 
+enum SlotType { inventory, itemBar }
+
 class GameMethods {
   static GameMethods get instance {
     return GameMethods();
@@ -28,6 +30,10 @@ class GameMethods {
   static Vector2 get blockSize {
     return Vector2.all(getScreenSize().width / chunkWidth) * 0.6;
     //return Vector2.all(20); //* SOLO PER DEBUG
+  }
+
+  static double get slotSize {
+    return 0.075 * getScreenSize().height;
   }
 
   static double get gravity {
