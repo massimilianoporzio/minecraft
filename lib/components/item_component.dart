@@ -41,8 +41,6 @@ class ItemComponent extends Entity {
         //* lo tolgo anche dalla lista globale se è andato a buon fine nell'inventario
         GlobalGameReference.instance.mainGameRef.worldData.items.remove(this);
         removeFromParent();
-        print(GlobalGameReference
-            .instance.mainGameRef.worldData.inventoryManager.inventorySlots);
       }
     }
   }

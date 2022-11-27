@@ -1,10 +1,11 @@
+import 'package:get/get.dart';
 import 'package:minecraft/utils/constants.dart';
 
 import '../resources/blocks.dart';
 
 class InventoryManager {
   List<InventorySlot> inventorySlots =
-      List.generate(5, (index) => InventorySlot(index: index));
+      List.generate(36, (index) => InventorySlot(index: index));
 
   bool addBlockToInventory(Blocks block) {
     //*loop sugli slots
@@ -27,15 +28,16 @@ class InventoryManager {
 class InventorySlot {
   Blocks? block;
   final index;
-  int count = 0;
-
+  Rx<int> count = 0
+      .obs; //* osservabile del package "GET" ogni volta che vcambia forza "build"
+//*|cone le reactive di VUE3|
   InventorySlot({required this.index});
 
   String get slotDescrption {
-    if (count == 0) {
+    if (count.value == 0) {
       return "Empty";
     } else {
-      return "$count " "of $block";
+      return "${count.value} " "of $block";
     }
   }
 
@@ -46,17 +48,17 @@ class InventorySlot {
   }
 
   bool incrementCount() {
-    if (count < stack) {
+    if (count.value < stack) {
       //* agg solo se minore di stack
-      count++;
+      count.value++;
       return true;
     }
     return false;
   }
 
   void decrementSlot() {
-    count--;
-    if (count == 0) {
+    count.value--;
+    if (count.value == 0) {
       block = null; //*SVUOTO
     }
   }
