@@ -4,7 +4,9 @@ import 'package:minecraft/utils/constants.dart';
 import '../resources/blocks.dart';
 
 class InventoryManager {
-  int currentSelectedSlot = 1; //*index dello slot selezionato da cui pescare
+  Rx<int> currentSelectedSlot =
+      0.obs; //*index dello slot selezionato da cui pescare
+
   List<InventorySlot> inventorySlots =
       List.generate(36, (index) => InventorySlot(index: index));
 

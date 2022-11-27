@@ -20,13 +20,16 @@ class InventorySlotWidget extends StatelessWidget {
         if (slotType == SlotType.itemBar) {
           //*SELEZIONO SOLO DALLA BARRA NON DALLO STORAGE
           GlobalGameReference.instance.mainGameRef.worldData.inventoryManager
-              .currentSelectedSlot = inventorySlot.index;
-          print("Selezionato lo slot con indice ${inventorySlot.index}");
+              .currentSelectedSlot.value = inventorySlot.index;
+          // print("Selezionato lo slot con indice ${inventorySlot.index}");
         }
       },
       child: Stack(
         children: [
-          InventorySlotBackgroundWidget(slotType: slotType),
+          InventorySlotBackgroundWidget(
+            slotType: slotType,
+            index: inventorySlot.index,
+          ),
           InventoryItemAndNumberWidget(
             inventorySlot: inventorySlot,
           )

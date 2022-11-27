@@ -44,26 +44,29 @@ class MainGame extends FlameGame
         GameMethods.adjacentBlockExists(blockPlacingPosition) &&
         worldData
                 .inventoryManager
-                .inventorySlots[worldData.inventoryManager.currentSelectedSlot]
+                .inventorySlots[
+                    worldData.inventoryManager.currentSelectedSlot.value]
                 .block !=
             null) {
 //*replace
       GameMethods.replaceBlockAtWorldChuncks(
           worldData
               .inventoryManager
-              .inventorySlots[worldData.inventoryManager.currentSelectedSlot]
+              .inventorySlots[
+                  worldData.inventoryManager.currentSelectedSlot.value]
               .block,
           blockPlacingPosition);
       add(BlockComponent(
           block: worldData
               .inventoryManager
-              .inventorySlots[worldData.inventoryManager.currentSelectedSlot]
+              .inventorySlots[
+                  worldData.inventoryManager.currentSelectedSlot.value]
               .block!,
           blockIndex: blockPlacingPosition,
           chunkIndex: GameMethods.getChunkIndexFromPositionIndex(
               blockPlacingPosition)));
       worldData.inventoryManager
-          .inventorySlots[worldData.inventoryManager.currentSelectedSlot]
+          .inventorySlots[worldData.inventoryManager.currentSelectedSlot.value]
           .decrementSlot();
     }
   }

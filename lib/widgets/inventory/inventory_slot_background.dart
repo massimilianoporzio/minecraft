@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 class InventorySlotBackgroundWidget extends StatelessWidget {
   final SlotType slotType;
-  const InventorySlotBackgroundWidget({super.key, required this.slotType});
+  final int index;
+  const InventorySlotBackgroundWidget(
+      {super.key, required this.slotType, required this.index});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         width: GameMethods.slotSize,
         height: GameMethods.slotSize,
-        child: FittedBox(child: Image.asset(getPath(slotType))));
+        child: FittedBox(
+            child: Obx(() => index ==
+                    GlobalGameReference.instance.mainGameRef.worldData
+                        .inventoryManager.currentSelectedSlot.value
+                ? Image.asset(
+                    "assets/images/inventory/inventory_active_slot.png")
+                : Image.asset(getPath(slotType)))));
   }
 
   String getPath(SlotType slotType) {
