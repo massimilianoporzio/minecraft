@@ -42,15 +42,29 @@ class MainGame extends FlameGame
         GameMethods.playerIsWithinReach(blockPlacingPosition) &&
         GameMethods.getBlockAtIndexPosition(blockPlacingPosition) == null &&
         GameMethods.adjacentBlockExists(blockPlacingPosition) &&
-        worldData.inventoryManager.inventorySlots[0].block != null) {
+        worldData
+                .inventoryManager
+                .inventorySlots[worldData.inventoryManager.currentSelectedSlot]
+                .block !=
+            null) {
 //*replace
-      GameMethods.replaceBlockAtWorldChuncks(Blocks.dirt, blockPlacingPosition);
+      GameMethods.replaceBlockAtWorldChuncks(
+          worldData
+              .inventoryManager
+              .inventorySlots[worldData.inventoryManager.currentSelectedSlot]
+              .block,
+          blockPlacingPosition);
       add(BlockComponent(
-          block: worldData.inventoryManager.inventorySlots[0].block!,
+          block: worldData
+              .inventoryManager
+              .inventorySlots[worldData.inventoryManager.currentSelectedSlot]
+              .block!,
           blockIndex: blockPlacingPosition,
           chunkIndex: GameMethods.getChunkIndexFromPositionIndex(
               blockPlacingPosition)));
-      worldData.inventoryManager.inventorySlots[0].decrementSlot();
+      worldData.inventoryManager
+          .inventorySlots[worldData.inventoryManager.currentSelectedSlot]
+          .decrementSlot();
     }
   }
 
@@ -67,21 +81,6 @@ class MainGame extends FlameGame
   Future<void>? onLoad() async {
     super.onLoad();
     camera.followComponent(playerComponent);
-
-    // * creo tre chunk uno dietro l'altro
-    // GameMethods.addChunkToWorldChunks(
-    //     ChunkGenerationMethods.generateChunk(-1), false); //chunck sinistro
-
-    // GameMethods.addChunkToWorldChunks(
-    //     ChunkGenerationMethods.generateChunk(0), true); // chunck centrale
-    // GameMethods.addChunkToWorldChunks(
-    //     ChunkGenerationMethods.generateChunk(1), true); // chunck destro
-    // li mostro
-    // renderChunk(-1);
-    // renderChunk(0);
-    // renderChunk(1);
-
-    // renderChunk(ChunkGenerationMethods.generateChunk());
 
     add(playerComponent);
   }

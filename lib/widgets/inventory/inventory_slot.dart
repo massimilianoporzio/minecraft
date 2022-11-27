@@ -1,9 +1,7 @@
-import 'package:flame/widgets.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
+import 'package:minecraft/global/global_game_reference.dart';
+
 import 'package:minecraft/global/inventory.dart';
-import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/utils/game_methods.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot_background.dart';
 
@@ -17,13 +15,23 @@ class InventorySlotWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        InventorySlotBackgroundWidget(slotType: slotType),
-        InventoryItemAndNumberWidget(
-          inventorySlot: inventorySlot,
-        )
-      ],
+    return GestureDetector(
+      onTap: () {
+        if (slotType == SlotType.itemBar) {
+          //*SELEZIONO SOLO DALLA BARRA NON DALLO STORAGE
+          GlobalGameReference.instance.mainGameRef.worldData.inventoryManager
+              .currentSelectedSlot = inventorySlot.index;
+          print("Selezionato lo slot con indice ${inventorySlot.index}");
+        }
+      },
+      child: Stack(
+        children: [
+          InventorySlotBackgroundWidget(slotType: slotType),
+          InventoryItemAndNumberWidget(
+            inventorySlot: inventorySlot,
+          )
+        ],
+      ),
     );
   }
 }

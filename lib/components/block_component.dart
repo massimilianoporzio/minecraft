@@ -69,7 +69,7 @@ class BlockComponent extends SpriteComponent with Tappable {
   @override
   bool onTapCancel() {
     //* se lascio il componente
-    print("BLCOK TAP CANCEL");
+    // print("BLCOK TAP CANCEL");
     super.onTapCancel();
     //* stop block breaking animation
     if (blockBreakingComponent.isMounted) {
@@ -80,7 +80,7 @@ class BlockComponent extends SpriteComponent with Tappable {
 
   @override
   bool onTapUp(TapUpInfo info) {
-    print("BLCOK TAP UP");
+    // print("BLCOK TAP UP");
     super.onTapUp(info);
     //* stop block breaking animation
     if (blockBreakingComponent.isMounted) {
