@@ -16,8 +16,9 @@ class InventorySlotBackgroundWidget extends StatelessWidget {
         height: GameMethods.slotSize,
         child: FittedBox(
             child: Obx(() => index ==
-                    GlobalGameReference.instance.mainGameRef.worldData
-                        .inventoryManager.currentSelectedSlot.value
+                        GlobalGameReference.instance.mainGameRef.worldData
+                            .inventoryManager.currentSelectedSlot.value &&
+                    slotType == SlotType.itemBar
                 ? Image.asset(
                     "assets/images/inventory/inventory_active_slot.png")
                 : Image.asset(getPath(slotType)))));
