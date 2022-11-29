@@ -7,8 +7,11 @@ class InventoryManager {
   Rx<int> currentSelectedSlot =
       0.obs; //*index dello slot selezionato da cui pescare
 
-  List<InventorySlot> inventorySlots =
-      List.generate(36, (index) => InventorySlot(index: index));
+  List<InventorySlot> inventorySlots = List.generate(
+      36,
+      (index) => InventorySlot(index: index)
+        ..block = Blocks.dirt
+        ..count.value = index);
 
   bool addBlockToInventory(Blocks block) {
     //*loop sugli slots

@@ -1,5 +1,6 @@
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
+import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 import '../../global/global_game_reference.dart';
@@ -11,34 +12,44 @@ class InventoryStorageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double inventoryStorageSize = GameMethods.slotSize * 9.5;
-    return Stack(
-      children: [
-        SizedBox(
-            width: inventoryStorageSize,
-            height: inventoryStorageSize,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Image.asset(
-                  'assets/images/inventory/inventory_background.png'),
-            )),
-        Positioned.fill(
-          child: Align(
-              alignment: Alignment.bottomCenter, //* ma la colonna occupa tutto
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  getRow(3),
-                  getRow(2),
-                  getRow(1),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: GameMethods.slotSize / 2),
-                    child: getRow(0), //* prima riga dal basso
-                  )
-                ],
-              )),
-        )
-      ],
+    return Padding(
+      padding: EdgeInsets.only(bottom: GameMethods.slotSize / 1.5),
+      child: SizedBox(
+        height: GameMethods.getScreenSize().height * 0.8,
+        width: GameMethods.getScreenSize().height * 0.8,
+        child: FittedBox(
+          child: Stack(
+            children: [
+              SizedBox(
+                  width: inventoryStorageSize,
+                  height: inventoryStorageSize,
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: Image.asset(
+                        'assets/images/inventory/inventory_background.png'),
+                  )),
+              Positioned.fill(
+                child: Align(
+                    alignment:
+                        Alignment.bottomCenter, //* ma la colonna occupa tutto
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        getRow(3),
+                        getRow(2),
+                        getRow(1),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: GameMethods.slotSize / 2),
+                          child: getRow(0), //* prima riga dal basso
+                        )
+                      ],
+                    )),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 
