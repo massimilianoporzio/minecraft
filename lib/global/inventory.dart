@@ -9,11 +9,8 @@ class InventoryManager {
 
   Rx<bool> inventoryIsOpen = false.obs; //*osservabile ora!
 
-  List<InventorySlot> inventorySlots = List.generate(
-      36,
-      (index) => InventorySlot(index: index)
-        ..block = Blocks.dirt
-        ..count.value = index);
+  List<InventorySlot> inventorySlots =
+      List.generate(36, (index) => InventorySlot(index: index));
 
   bool addBlockToInventory(Blocks block) {
     //*loop sugli slots
@@ -47,6 +44,15 @@ class InventorySlot {
     } else {
       return "${count.value} " "of $block";
     }
+  }
+
+  bool get isEmpty {
+    return count.value == 0;
+  }
+
+  void emptySlot() {
+    block = null;
+    count.value = 0;
   }
 
   @override

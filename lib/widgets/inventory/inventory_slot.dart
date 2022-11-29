@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 
 import 'package:minecraft/global/inventory.dart';
+import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/game_methods.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot_background.dart';
 
@@ -35,18 +36,74 @@ class InventorySlotWidget extends StatelessWidget {
             child: getChild());
       //* inventory
       case SlotType.inventory:
-        return Draggable(
-          //*feedback è quello che vedo quando trascino
-          feedback: InventoryItemAndNumberWidget(inventorySlot: inventorySlot),
-          //*childWnhenDragging è cosa vedo al posto dell'originale quando trascino
-          childWhenDragging: InventorySlotBackgroundWidget(
-            slotType: slotType,
-            index: inventorySlot.index,
+        //*per gesitre il click lungo
+        return GestureDetector(
+          onLongPress: () {
+            for (int i = 0; i < inventorySlot.count.value / 2; i++) {
+              //fino a metà valore
+              GlobalGameReference
+                  .instance.mainGameRef.worldData.inventoryManager
+                  .addBlockToInventory(inventorySlot.block!);
+              inventorySlot.decrementSlot(); //riduco da quello di partenza
+            }
+          },
+          child: Draggable(
+            //*dati associati con il draggable
+            data: inventorySlot,
+            //*feedback è quello che vedo quando trascino
+            feedback:
+                InventoryItemAndNumberWidget(inventorySlot: inventorySlot),
+            //*childWnhenDragging è cosa vedo al posto dell'originale quando trascino
+            childWhenDragging: InventorySlotBackgroundWidget(
+              slotType: slotType,
+              index: inventorySlot.index,
+            ),
+            child: //*core part of inventory slot
+                getChild(),
           ),
-          child: //*core part of inventory slot
-              getChild(),
         );
     }
+  }
+
+  //*return a dragtarget dove posizionare i draggables
+  Widget getDragTarget() {
+    return SizedBox(
+      width: GameMethods.slotSize,
+      height: GameMethods.slotSize,
+      child: DragTarget(
+        builder: (context, candidateData, rejectedData) => Container(),
+        //*quando ho rilasciato il draggable
+        onAccept: (InventorySlot draggingInventorySlot) {
+          if (inventorySlot.isEmpty) {
+            inventorySlot.block = draggingInventorySlot.block;
+            inventorySlot.count.value = draggingInventorySlot.count.value;
+            draggingInventorySlot.emptySlot();
+          } else {
+            //*NON ERA VUOTO
+            if (inventorySlot.block == draggingInventorySlot.block) {
+              //*STESSO TIPO DI BLOCCO
+              //* somma <= stack?? (64)
+              if (inventorySlot.count.value +
+                      draggingInventorySlot.count.value <=
+                  stack) {
+                //*POSSO UNIRLI
+                inventorySlot.count.value += draggingInventorySlot.count.value;
+                draggingInventorySlot.emptySlot();
+              }
+            } else {
+              //*BLOCCHI DIVERSI: SCAMBIO
+              InventorySlot tmp = InventorySlot(index: inventorySlot.index)
+                ..block = inventorySlot.block
+                ..count.value = inventorySlot.count.value;
+              inventorySlot.block = draggingInventorySlot.block;
+              inventorySlot.count.value = draggingInventorySlot.count.value;
+              draggingInventorySlot.block = tmp.block;
+              draggingInventorySlot.count.value = tmp.count.value;
+            }
+          }
+        },
+      ),
+    );
   }
 
   Stack getChild() {
@@ -58,7 +115,8 @@ class InventorySlotWidget extends StatelessWidget {
         ),
         InventoryItemAndNumberWidget(
           inventorySlot: inventorySlot,
-        )
+        ),
+        getDragTarget()
       ],
     );
   }
