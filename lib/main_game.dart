@@ -111,6 +111,12 @@ class MainGame extends FlameGame
         keysPressed.contains(LogicalKeyboardKey.keyW)) {
       worldData.playerData.motionState = ComponentMotionState.jumping;
     }
+    if (keysPressed.contains(LogicalKeyboardKey.keyI)) {
+      GlobalGameReference.instance.mainGameRef.worldData.inventoryManager
+              .inventoryIsOpen.value =
+          !GlobalGameReference.instance.mainGameRef.worldData.inventoryManager
+              .inventoryIsOpen.value;
+    }
     if (keysPressed.isEmpty) {
       //*non premo nulla
       worldData.playerData.motionState = ComponentMotionState.idle;

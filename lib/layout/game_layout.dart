@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/world_data.dart';
 import 'package:minecraft/layout/controller_widget.dart';
 import 'package:minecraft/utils/game_methods.dart';

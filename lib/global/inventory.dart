@@ -7,6 +7,8 @@ class InventoryManager {
   Rx<int> currentSelectedSlot =
       0.obs; //*index dello slot selezionato da cui pescare
 
+  Rx<bool> inventoryIsOpen = false.obs; //*osservabile ora!
+
   List<InventorySlot> inventorySlots = List.generate(
       36,
       (index) => InventorySlot(index: index)
