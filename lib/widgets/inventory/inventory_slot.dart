@@ -15,26 +15,54 @@ class InventorySlotWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (slotType == SlotType.itemBar) {
-          //*SELEZIONO SOLO DALLA BARRA NON DALLO STORAGE
-          GlobalGameReference.instance.mainGameRef.worldData.inventoryManager
-              .currentSelectedSlot.value = inventorySlot.index;
-          // print("Selezionato lo slot con indice ${inventorySlot.index}");
-        }
-      },
-      child: Stack(
-        children: [
-          InventorySlotBackgroundWidget(
+    switch (slotType) {
+      //*item bar
+      case SlotType.itemBar:
+      return  GestureDetector(
+            //* child di Draggable è COSA voglio vedere quando NON STO SPOSTANDO
+            onTap: () {
+              //SOLO PER ITEMBAR
+                //*SELEZIONO SOLO DALLA BARRA NON DALLO STORAGE
+                GlobalGameReference
+                    .instance
+                    .mainGameRef
+                    .worldData
+                    .inventoryManager
+                    .currentSelectedSlot
+                    .value = inventorySlot.index;
+                // print("Selezionato lo slot con indice ${inventorySlot.index}");
+              
+            },
+            child:  getChild());
+      //* inventory
+      case SlotType.inventory:
+        return Draggable(
+          //*feedback è quello che vedo quando trascino
+          feedback: InventoryItemAndNumberWidget(inventorySlot: inventorySlot),
+          //*childWnhenDragging è cosa vedo al posto dell'originale quando trascino
+          childWhenDragging: InventorySlotBackgroundWidget(
             slotType: slotType,
             index: inventorySlot.index,
           ),
-          InventoryItemAndNumberWidget(
-            inventorySlot: inventorySlot,
-          )
-        ],
-      ),
+          child:
+            //*core part of inventory slot
+             getChild()),
+          ,
+        );
+    }
+  }
+
+  Stack getChild() {
+    return Stack(
+      children: [
+        InventorySlotBackgroundWidget(
+          slotType: slotType,
+          index: inventorySlot.index,
+        ),
+        InventoryItemAndNumberWidget(
+          inventorySlot: inventorySlot,
+        )
+      ],
     );
   }
 }
