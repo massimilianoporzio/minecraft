@@ -18,22 +18,21 @@ class InventorySlotWidget extends StatelessWidget {
     switch (slotType) {
       //*item bar
       case SlotType.itemBar:
-      return  GestureDetector(
+        return GestureDetector(
             //* child di Draggable è COSA voglio vedere quando NON STO SPOSTANDO
             onTap: () {
               //SOLO PER ITEMBAR
-                //*SELEZIONO SOLO DALLA BARRA NON DALLO STORAGE
-                GlobalGameReference
-                    .instance
-                    .mainGameRef
-                    .worldData
-                    .inventoryManager
-                    .currentSelectedSlot
-                    .value = inventorySlot.index;
-                // print("Selezionato lo slot con indice ${inventorySlot.index}");
-              
+              //*SELEZIONO SOLO DALLA BARRA NON DALLO STORAGE
+              GlobalGameReference
+                  .instance
+                  .mainGameRef
+                  .worldData
+                  .inventoryManager
+                  .currentSelectedSlot
+                  .value = inventorySlot.index;
+              // print("Selezionato lo slot con indice ${inventorySlot.index}");
             },
-            child:  getChild());
+            child: getChild());
       //* inventory
       case SlotType.inventory:
         return Draggable(
@@ -44,10 +43,8 @@ class InventorySlotWidget extends StatelessWidget {
             slotType: slotType,
             index: inventorySlot.index,
           ),
-          child:
-            //*core part of inventory slot
-             getChild()),
-          ,
+          child: //*core part of inventory slot
+              getChild(),
         );
     }
   }
