@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/utils/game_methods.dart';
 import 'package:minecraft/widgets/crafting/player_inventory_crafting_grid.dart';
+import 'package:minecraft/widgets/crafting/standard_crafting_grid.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot.dart';
 import 'package:minecraft/widgets/inventory/inventory_storage_widget.dart';
 
@@ -20,7 +21,7 @@ class PlayerInventoryWidget extends StatelessWidget {
                 child: Stack(
                   children: const [
                     InventoryStorageWidget(),
-                    PlayerInventoryCraftingGridWidget()
+                    PlayerInventoryCraftingGridWidget(),
                   ],
                 ),
               ),

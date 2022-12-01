@@ -4,6 +4,7 @@ import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/world_data.dart';
 import 'package:minecraft/layout/controller_widget.dart';
 import 'package:minecraft/utils/game_methods.dart';
+import 'package:minecraft/widgets/crafting/crafting_inventory.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot.dart';
 import 'package:minecraft/widgets/inventory/inventory_storage_widget.dart';
 import 'package:minecraft/widgets/inventory/item_bar.dart';
@@ -24,7 +25,8 @@ class GameLayout extends StatelessWidget {
         //*here comes the hud
         const ControllerWidget(),
         const ItemBarWidget(),
-        const PlayerInventoryWidget()
+        const PlayerInventoryWidget(),
+        const CraftingInventory(),
       ],
     );
   }
