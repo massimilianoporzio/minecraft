@@ -40,7 +40,8 @@ class InventoryStorageWidget extends StatelessWidget {
                       alignment:
                           Alignment.bottomCenter, //* ma la colonna occupa tutto
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisSize:
+                            MainAxisSize.min, //*così la costringo al minimo
                         children: [
                           getRow(3),
                           getRow(2),
@@ -66,26 +67,29 @@ class InventoryStorageWidget extends StatelessWidget {
 
   Widget getDragTarget(Direction directction) {
     return Expanded(
-        child: DragTarget(
-      builder: (context, candidateData, rejectedData) => Container(),
-      onAccept: (InventorySlot inventorySlot) async {
-        //* spawning position:
-        int offset = directction == Direction.left ? -7 : 7;
+        child: SizedBox(
+      height: GameMethods.slotSize * 9.5,
+      child: DragTarget(
+        builder: (context, candidateData, rejectedData) => Container(),
+        onAccept: (InventorySlot inventorySlot) async {
+          //* spawning position:
+          int offset = directction == Direction.left ? -7 : 7;
 
-        Vector2 spawningPosition = Vector2(
-            GameMethods.playerXIndexPosition + offset,
-            GameMethods.playerYIndexPosition -
-                maxReach); //* -maxReach cade da più in alto
+          Vector2 spawningPosition = Vector2(
+              GameMethods.playerXIndexPosition + offset,
+              GameMethods.playerYIndexPosition -
+                  maxReach); //* -maxReach cade da più in alto
 
-        //*loop su tutti gli item
-        for (var i = 0; i < inventorySlot.count.value; i++) {
-          GlobalGameReference.instance.mainGameRef.worldData.items.add(
-              ItemComponent(
-                  spawnBlockIndex: spawningPosition,
-                  block: inventorySlot.block!));
-        } //* fine loop
-        inventorySlot.emptySlot(); //*svuoto
-      },
+          //*loop su tutti gli item
+          for (var i = 0; i < inventorySlot.count.value; i++) {
+            GlobalGameReference.instance.mainGameRef.worldData.items.add(
+                ItemComponent(
+                    spawnBlockIndex: spawningPosition,
+                    block: inventorySlot.block!));
+          } //* fine loop
+          inventorySlot.emptySlot(); //*svuoto
+        },
+      ),
     ));
   }
 

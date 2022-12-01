@@ -43,7 +43,7 @@ class InventorySlotWidget extends StatelessWidget {
                   .inventoryManager
                   .currentSelectedSlot
                   .value = inventorySlot.index;
-              print("BUTTO");
+
               //* spawning position:
               int offset = 2;
 
