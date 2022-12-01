@@ -56,15 +56,26 @@ class MainGame extends FlameGame
                   worldData.inventoryManager.currentSelectedSlot.value]
               .block,
           blockPlacingPosition);
-      add(BlockComponent(
-          block: worldData
+      //*USO add(BlockData ecc) perchése è una CRAFTINGTABLE voglio fare add di una istanza di quella classe!
+      // add(BlockComponent(
+      //     block: worldData
+      //         .inventoryManager
+      //         .inventorySlots[
+      //             worldData.inventoryManager.currentSelectedSlot.value]
+      //         .block!,
+      //     blockIndex: blockPlacingPosition,
+      //     chunkIndex: GameMethods.getChunkIndexFromPositionIndex(
+      //         blockPlacingPosition)));
+
+      add(BlockData.getParentForBlock(
+          worldData
               .inventoryManager
               .inventorySlots[
                   worldData.inventoryManager.currentSelectedSlot.value]
               .block!,
-          blockIndex: blockPlacingPosition,
-          chunkIndex: GameMethods.getChunkIndexFromPositionIndex(
-              blockPlacingPosition)));
+          blockPlacingPosition,
+          GameMethods.getChunkIndexFromPositionIndex(blockPlacingPosition)));
+
       worldData.inventoryManager
           .inventorySlots[worldData.inventoryManager.currentSelectedSlot.value]
           .decrementSlot();
@@ -86,6 +97,13 @@ class MainGame extends FlameGame
     camera.followComponent(playerComponent);
 
     add(playerComponent);
+
+    //*uso Future e Timer per essere sicuro che sia già costruito
+    //*DOPO UN SECONDO AGGIUNGO LA CRAFTING TABLE
+    Future.delayed(Duration(seconds: 1)).then((value) {
+      GlobalGameReference.instance.mainGameRef.worldData.inventoryManager
+          .addBlockToInventory(Blocks.craftingTable); //*per debug
+    });
   }
 
   @override
@@ -132,11 +150,13 @@ class MainGame extends FlameGame
     chunk.asMap().forEach((int yIndex, List<Blocks?> rowOfBlocks) {
       rowOfBlocks.asMap().forEach((int xIndex, Blocks? block) {
         if (block != null) {
-          add(BlockComponent(
-              block: block,
-              chunkIndex: chunkIndex,
-              blockIndex: Vector2(chunkIndex * chunkWidth + xIndex.toDouble(),
-                  yIndex.toDouble())));
+          //*AGGIUNGO O IL BLOCCO STD O la CRAFTING
+          //*USO add(BlockData ecc) perchése è una CRAFTINGTABLE voglio fare add di una istanza di quella classe!
+          add(BlockData.getParentForBlock(
+              block,
+              Vector2(chunkIndex * chunkWidth + xIndex.toDouble(),
+                  yIndex.toDouble()),
+              chunkIndex));
         }
       });
     });

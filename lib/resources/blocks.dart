@@ -1,3 +1,7 @@
+import 'package:flame/components.dart';
+import 'package:minecraft/blocks/crafting_table_block.dart';
+import 'package:minecraft/components/block_component.dart';
+
 enum Blocks {
   grass,
   dirt,
@@ -125,6 +129,21 @@ class BlockData {
 
       case Blocks.lollite:
         return BlockData.stone;
+    }
+  }
+
+  static BlockComponent getParentForBlock(
+      Blocks block, Vector2 blockIndex, int chunkIndex) {
+    switch (block) {
+      case Blocks.craftingTable:
+        //*GESTISCO CRAFTINGTABLE
+        return CraftingTableBlock(
+            blockIndex: blockIndex, chunkIndex: chunkIndex);
+
+      default:
+        //*GESTISCO GLI ALTRI CASI
+        return BlockComponent(
+            block: block, blockIndex: blockIndex, chunkIndex: chunkIndex);
     }
   }
 }
