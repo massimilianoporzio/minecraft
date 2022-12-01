@@ -1,3 +1,4 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 
@@ -6,6 +7,7 @@ import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/game_methods.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot_background.dart';
 
+import '../../components/item_component.dart';
 import 'inventory_item_and_number.dart';
 
 class InventorySlotWidget extends StatelessWidget {
@@ -32,6 +34,32 @@ class InventorySlotWidget extends StatelessWidget {
                   .currentSelectedSlot
                   .value = inventorySlot.index;
               // print("Selezionato lo slot con indice ${inventorySlot.index}");
+            },
+            onLongPress: () {
+              GlobalGameReference
+                  .instance
+                  .mainGameRef
+                  .worldData
+                  .inventoryManager
+                  .currentSelectedSlot
+                  .value = inventorySlot.index;
+              print("BUTTO");
+              //* spawning position:
+              int offset = 2;
+
+              Vector2 spawningPosition = Vector2(
+                  GameMethods.playerXIndexPosition + offset,
+                  GameMethods.playerYIndexPosition -
+                      maxReach); //* -maxReach cade da più in alto
+
+              //*loop su tutti gli item
+              for (var i = 0; i < inventorySlot.count.value; i++) {
+                GlobalGameReference.instance.mainGameRef.worldData.items.add(
+                    ItemComponent(
+                        spawnBlockIndex: spawningPosition,
+                        block: inventorySlot.block!));
+              } //* fine loop
+              inventorySlot.emptySlot(); //*svuoto
             },
             child: getChild());
       //* inventory
