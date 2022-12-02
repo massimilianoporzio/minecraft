@@ -17,6 +17,7 @@ import 'package:minecraft/utils/chunk_generator_methods.dart';
 import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
+import 'resources/items.dart';
 import 'utils/typedefs.dart';
 
 class MainGame extends FlameGame
@@ -47,7 +48,13 @@ class MainGame extends FlameGame
                 .inventorySlots[
                     worldData.inventoryManager.currentSelectedSlot.value]
                 .block !=
-            null) {
+            null &&
+        worldData
+            .inventoryManager
+            .inventorySlots[
+                worldData.inventoryManager.currentSelectedSlot.value]
+            .block is Blocks) {
+      //* piazzo solo i blocchi non gli items
 //*replace
       GameMethods.replaceBlockAtWorldChuncks(
           worldData
@@ -103,6 +110,7 @@ class MainGame extends FlameGame
     Future.delayed(Duration(seconds: 1)).then((value) {
       GlobalGameReference.instance.mainGameRef.worldData.inventoryManager
           .addBlockToInventory(Blocks.craftingTable); //*per debug
+      worldData.inventoryManager.addBlockToInventory(Items.apple);
     });
   }
 

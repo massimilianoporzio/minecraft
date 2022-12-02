@@ -59,7 +59,7 @@ class InventorySlotWidget extends StatelessWidget {
                 GlobalGameReference.instance.mainGameRef.worldData.items.add(
                     ItemComponent(
                         spawnBlockIndex: spawningPosition,
-                        block: inventorySlot.block!));
+                        item: inventorySlot.block!));
               } //* fine loop
               inventorySlot.emptySlot(); //*svuoto
             },

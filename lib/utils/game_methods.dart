@@ -7,6 +7,8 @@ import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/utils/constants.dart';
 import 'package:minecraft/utils/typedefs.dart';
 
+import '../resources/items.dart';
+
 enum Direction { top, bottom, left, right }
 
 enum SlotType { inventory, itemBar, crafting, craftingOutput }
@@ -60,9 +62,21 @@ class GameMethods {
         srcSize: Vector2.all(60));
   }
 
+  static SpriteSheet getItemSpriteSheet() {
+    return SpriteSheet(
+        image: Flame.images
+            .fromCache('sprite_sheets/item/item_sprite_sheet_mod.png'),
+        srcSize: Vector2.all(60));
+  }
+
   static Sprite getSpriteFromBlock(Blocks block) {
     SpriteSheet spriteSheet = getBlockSpriteSheet();
     return spriteSheet.getSprite(0, block.index);
+  }
+
+  static Sprite getSpriteFromItem(Items item) {
+    SpriteSheet spriteSheet = getItemSpriteSheet();
+    return spriteSheet.getSprite(0, item.index);
   }
 
   //return WHERE terrain will start

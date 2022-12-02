@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:minecraft/components/player_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/entity.dart';
+import 'package:minecraft/resources/items.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 import '../resources/blocks.dart';
@@ -10,9 +11,9 @@ import 'block_component.dart';
 
 class ItemComponent extends Entity {
   final Vector2 spawnBlockIndex;
-  final Blocks block;
+  final dynamic item;
 
-  ItemComponent({required this.spawnBlockIndex, required this.block});
+  ItemComponent({required this.spawnBlockIndex, required this.item});
 
   @override
   Future<void>? onLoad() async {
@@ -23,9 +24,11 @@ class ItemComponent extends Entity {
     position =
         spawnBlockIndex * GameMethods.blockSize.x + GameMethods.blockSize / 2;
     //*animazione con UN SOLO SPRITE
-    animation = SpriteAnimation.spriteList(
-        [GameMethods.getSpriteFromBlock(block)],
-        stepTime: 1);
+    animation = SpriteAnimation.spriteList([
+      item is Blocks
+          ? GameMethods.getSpriteFromBlock(item)
+          : GameMethods.getSpriteFromItem(item)
+    ], stepTime: 1);
   }
 
   @override
@@ -37,7 +40,7 @@ class ItemComponent extends Entity {
     } else if (other is PlayerComponent) {
       //*il giocatore ci è passato sopra: lo agg all'inventario
       if (GlobalGameReference.instance.mainGameRef.worldData.inventoryManager
-          .addBlockToInventory(block)) {
+          .addBlockToInventory(item)) {
         //* lo tolgo anche dalla lista globale se è andato a buon fine nell'inventario
         GlobalGameReference.instance.mainGameRef.worldData.items.remove(this);
         removeFromParent();

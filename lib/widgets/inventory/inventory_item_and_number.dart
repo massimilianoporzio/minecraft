@@ -30,8 +30,11 @@ class InventoryItemAndNumberWidget extends StatelessWidget {
                             padding:
                                 EdgeInsets.all(GameMethods.blockSize.y / 4),
                             child: SpriteWidget(
-                                sprite: GameMethods.getSpriteFromBlock(
-                                    inventorySlot.block!)),
+                                sprite: inventorySlot.block is Blocks
+                                    ? GameMethods.getSpriteFromBlock(
+                                        inventorySlot.block!)
+                                    : GameMethods.getSpriteFromItem(
+                                        inventorySlot.block!)),
                           )),
                       Positioned(
                           bottom: 0,

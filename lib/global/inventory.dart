@@ -12,7 +12,7 @@ class InventoryManager {
   List<InventorySlot> inventorySlots =
       List.generate(36, (index) => InventorySlot(index: index));
 
-  bool addBlockToInventory(Blocks block) {
+  bool addBlockToInventory(dynamic block) {
     //*loop sugli slots
     for (InventorySlot slot in inventorySlots) {
       if (slot.block == block) {
@@ -31,7 +31,7 @@ class InventoryManager {
 }
 
 class InventorySlot {
-  Blocks? block;
+  dynamic block; //*può essere Block ma anche ITEM
   final index;
   Rx<int> count = 0
       .obs; //* osservabile del package "GET" ogni volta che vcambia forza "build"

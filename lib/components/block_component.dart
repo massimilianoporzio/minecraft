@@ -30,7 +30,7 @@ class BlockComponent extends SpriteComponent with Tappable {
     GameMethods.replaceBlockAtWorldChuncks(null, blockIndex);
     //SPAWNING. add to main game list of items
     GlobalGameReference.instance.mainGameRef.worldData.items
-        .add(ItemComponent(spawnBlockIndex: blockIndex, block: block));
+        .add(ItemComponent(spawnBlockIndex: blockIndex, item: block));
     removeFromParent(); //*TOLGO LA ANIMAZIONE
   }
 
