@@ -17,19 +17,42 @@ class CraftingTableBlock extends BlockComponent {
 
   //*EXTRA FUNCIONTALITIES
   //*SE CLICCO SU CRAFTING TABLE VOGLIO APRIRE CRAFTING TABLE
+  // @override
+  // bool onTapDown(TapDownInfo info) {
+  //   print("CRAFTINGTABLE COMPONENT TAP DOWN");
+  //   //* se non ho nulla selezionato
+  //   if (inventoryManager
+  //       .inventorySlots[inventoryManager.currentSelectedSlot.value].isEmpty) {
+  //     //*apro la crafting invenroty
+  //     GlobalGameReference.instance.mainGameRef.worldData.craftingManager
+  //         .craftingInventoryIsOpen.value = true;
+  //   } else {
+  //     //*chiamo il solito metodo
+  //     super.onTapDown(info); //*ROMPE IL
+  //   }
+  //   info.handled = true;
+  //   return true;
+  // }
+
+  @override
+  bool onLongTapDown(TapDownInfo info) {
+    //*chiamo il solito metodo
+    super.onTapDown(info); //*ROMPE IL blocco
+    info.handled = true;
+    return true;
+  }
+
   @override
   bool onTapDown(TapDownInfo info) {
-    print("CRAFTINGTABLE COMPONENT TAP DOWN");
-    //* se non ho nulla selezionato
-    if (inventoryManager
-        .inventorySlots[inventoryManager.currentSelectedSlot.value].isEmpty) {
-      //*apro la crafting invenroty
-      GlobalGameReference.instance.mainGameRef.worldData.craftingManager
-          .craftingInventoryIsOpen.value = true;
-    } else {
-      //*chiamo il solito metodo
-      super.onTapDown(info); //*ROMPE IL
-    }
+    info.handled = true;
+    return true;
+  }
+
+  @override
+  bool onTapUp(TapUpInfo info) {
+    //*apro la crafting invenroty
+    GlobalGameReference.instance.mainGameRef.worldData.craftingManager
+        .craftingInventoryIsOpen.value = true;
     info.handled = true;
     return true;
   }

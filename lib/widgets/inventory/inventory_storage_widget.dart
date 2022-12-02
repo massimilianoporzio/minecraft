@@ -78,7 +78,7 @@ class InventoryStorageWidget extends StatelessWidget {
           builder: (context, candidateData, rejectedData) => Container(),
           onAccept: (InventorySlot inventorySlot) async {
             //* spawning position:
-            int offset = directction == Direction.left ? -7 : 7;
+            int offset = directction == Direction.left ? -1 : 1;
 
             Vector2 spawningPosition = Vector2(
                 GameMethods.playerXIndexPosition + offset,
