@@ -69,7 +69,7 @@ class InventorySlotWidget extends StatelessWidget {
         //*per gesitre il click lungo
         return GestureDetector(
           onLongPress: () {
-            for (int i = 0; i < inventorySlot.count.value / 2; i++) {
+            for (int i = 0; i <= inventorySlot.count.value / 2; i++) {
               //fino a metà valore
               GlobalGameReference
                   .instance.mainGameRef.worldData.inventoryManager
@@ -97,7 +97,7 @@ class InventorySlotWidget extends StatelessWidget {
         //*per gesitre il click lungo
         return GestureDetector(
           onLongPress: () {
-            for (int i = 0; i < inventorySlot.count.value / 2; i++) {
+            for (int i = 0; i <= inventorySlot.count.value / 2; i++) {
               //fino a metà valore
               GlobalGameReference
                   .instance.mainGameRef.worldData.inventoryManager
@@ -146,6 +146,14 @@ class InventorySlotWidget extends StatelessWidget {
                     outputSlot.decrementSlot();
                   }
                 }
+                GlobalGameReference
+                    .instance.mainGameRef.worldData.craftingManager
+                    .decrementOneFromEachSlot(GlobalGameReference
+                        .instance
+                        .mainGameRef
+                        .worldData
+                        .craftingManager
+                        .playerInventoryCraftingGrid);
               } else {
                 //*sono nella standard 3x3
                 //*prendo l'ultimo slot
@@ -166,8 +174,19 @@ class InventorySlotWidget extends StatelessWidget {
                     outputSlot.decrementSlot();
                   }
                 }
+                GlobalGameReference
+                    .instance.mainGameRef.worldData.craftingManager
+                    .decrementOneFromEachSlot(GlobalGameReference
+                        .instance
+                        .mainGameRef
+                        .worldData
+                        .craftingManager
+                        .standardCraftingGrid);
               }
-            },
+              //*controllo se ci sono ancora item per craftare
+              GlobalGameReference.instance.mainGameRef.worldData.craftingManager
+                  .checkForRecipe();
+            }, //fine onTap,
             child: getChild()); //NO DRAGGABLE FUNCTIONALITY
     }
   }
@@ -214,7 +233,9 @@ class InventorySlotWidget extends StatelessWidget {
 
           if (slotType == SlotType.crafting) {
             //*cerco se è ricetta per craftare qualcosa
-            print("Cecking for receipe");
+
+            GlobalGameReference.instance.mainGameRef.worldData.craftingManager
+                .checkForRecipe();
           }
         },
       ),

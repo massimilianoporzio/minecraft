@@ -111,6 +111,10 @@ class MainGame extends FlameGame
       GlobalGameReference.instance.mainGameRef.worldData.inventoryManager
           .addBlockToInventory(Blocks.craftingTable); //*per debug
       worldData.inventoryManager.addBlockToInventory(Items.apple);
+      worldData.inventoryManager.addBlockToInventory(Items.apple);
+      worldData.inventoryManager.addBlockToInventory(Items.apple);
+      worldData.inventoryManager.addBlockToInventory(Items.apple);
+      worldData.inventoryManager.addBlockToInventory(Items.apple);
     });
   }
 
