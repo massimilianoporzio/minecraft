@@ -30,6 +30,10 @@ class InventorySlotBackgroundWidget extends StatelessWidget {
         return "assets/images/inventory/inventory_item_storage_slot.png";
       case SlotType.itemBar:
         return "assets/images/inventory/inventory_item_bar_slot.png";
+      case SlotType.crafting:
+        return "assets/images/inventory/inventory_item_storage_slot.png";
+      case SlotType.craftingOutput:
+        return "assets/images/inventory/inventory_item_storage_slot.png";
       default:
         return "assets/images/inventory/inventory_item_storage_slot.png";
     }

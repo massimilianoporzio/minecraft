@@ -15,15 +15,15 @@ class StandardCraftingGridWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             InventorySlotWidget(
-                slotType: SlotType.inventory,
+                slotType: SlotType.crafting,
                 inventorySlot: GlobalGameReference.instance.mainGameRef
                     .worldData.craftingManager.standardCraftingGrid[0]),
             InventorySlotWidget(
-                slotType: SlotType.inventory,
+                slotType: SlotType.crafting,
                 inventorySlot: GlobalGameReference.instance.mainGameRef
                     .worldData.craftingManager.standardCraftingGrid[1]),
             InventorySlotWidget(
-                slotType: SlotType.inventory,
+                slotType: SlotType.crafting,
                 inventorySlot: GlobalGameReference.instance.mainGameRef
                     .worldData.craftingManager.standardCraftingGrid[2]),
           ],
@@ -33,15 +33,15 @@ class StandardCraftingGridWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             InventorySlotWidget(
-                slotType: SlotType.inventory,
+                slotType: SlotType.crafting,
                 inventorySlot: GlobalGameReference.instance.mainGameRef
                     .worldData.craftingManager.standardCraftingGrid[3]),
             InventorySlotWidget(
-                slotType: SlotType.inventory,
+                slotType: SlotType.crafting,
                 inventorySlot: GlobalGameReference.instance.mainGameRef
                     .worldData.craftingManager.standardCraftingGrid[4]),
             InventorySlotWidget(
-                slotType: SlotType.inventory,
+                slotType: SlotType.crafting,
                 inventorySlot: GlobalGameReference.instance.mainGameRef
                     .worldData.craftingManager.standardCraftingGrid[5]),
           ],
@@ -51,15 +51,15 @@ class StandardCraftingGridWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             InventorySlotWidget(
-                slotType: SlotType.inventory,
+                slotType: SlotType.crafting,
                 inventorySlot: GlobalGameReference.instance.mainGameRef
                     .worldData.craftingManager.standardCraftingGrid[6]),
             InventorySlotWidget(
-                slotType: SlotType.inventory,
+                slotType: SlotType.crafting,
                 inventorySlot: GlobalGameReference.instance.mainGameRef
                     .worldData.craftingManager.standardCraftingGrid[7]),
             InventorySlotWidget(
-                slotType: SlotType.inventory,
+                slotType: SlotType.crafting,
                 inventorySlot: GlobalGameReference.instance.mainGameRef
                     .worldData.craftingManager.standardCraftingGrid[8]),
           ],
@@ -88,7 +88,7 @@ class StandardCraftingGridWidget extends StatelessWidget {
                       child: Image.asset(
                           "assets/images/inventory/inventory_arrow.png")),
                   InventorySlotWidget(
-                      slotType: SlotType.inventory,
+                      slotType: SlotType.craftingOutput,
                       inventorySlot: GlobalGameReference.instance.mainGameRef
                           .worldData.craftingManager.standardCraftingGrid[9])
                 ]),

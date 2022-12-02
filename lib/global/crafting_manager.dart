@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/inventory.dart';
 
 class CraftingManager {
@@ -9,4 +10,9 @@ class CraftingManager {
 
   List<InventorySlot> standardCraftingGrid = List.generate(
       10, (index) => InventorySlot(index: index)); //* 9 (3x3) e 1 output
+
+  static bool isInPlayerInventory() {
+    return GlobalGameReference
+        .instance.mainGameRef.worldData.inventoryManager.inventoryIsOpen.value;
+  }
 }
