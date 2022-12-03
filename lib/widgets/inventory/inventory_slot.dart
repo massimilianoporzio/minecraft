@@ -10,6 +10,7 @@ import 'package:minecraft/widgets/crafting/crafting_inventory.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot_background.dart';
 
 import '../../components/item_component.dart';
+import '../../resources/items.dart';
 import 'inventory_item_and_number.dart';
 
 class InventorySlotWidget extends StatelessWidget {
@@ -214,10 +215,10 @@ class InventorySlotWidget extends StatelessWidget {
               //*NON ERA VUOTO
               if (inventorySlot.block == draggingInventorySlot.block) {
                 //*STESSO TIPO DI BLOCCO
-                //* somma <= stack?? (64)
+                //* somma <= stack?? (64 o 1)
                 if (inventorySlot.count.value +
                         draggingInventorySlot.count.value <=
-                    stack) {
+                    getStack(draggingInventorySlot.block)) {
                   //*POSSO UNIRLI
                   inventorySlot.count.value +=
                       draggingInventorySlot.count.value;
@@ -228,8 +229,10 @@ class InventorySlotWidget extends StatelessWidget {
                 InventorySlot tmp = InventorySlot(index: inventorySlot.index)
                   ..block = inventorySlot.block
                   ..count.value = inventorySlot.count.value;
+
                 inventorySlot.block = draggingInventorySlot.block;
                 inventorySlot.count.value = draggingInventorySlot.count.value;
+                inventorySlot.count.refresh();
                 draggingInventorySlot.block = tmp.block;
                 draggingInventorySlot.count.value = tmp.count.value;
               }
@@ -261,5 +264,12 @@ class InventorySlotWidget extends StatelessWidget {
         getDragTarget()
       ],
     );
+  }
+
+  int getStack(dynamic block) {
+    return (block is Items &&
+            ItemData.getItemDataFor(inventorySlot.block).toolType != Tools.none)
+        ? 1
+        : stack;
   }
 }

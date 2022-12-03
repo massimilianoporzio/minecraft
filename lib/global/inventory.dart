@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:minecraft/utils/constants.dart';
 
 import '../resources/blocks.dart';
+import '../resources/items.dart';
 
 class InventoryManager {
   Rx<int> currentSelectedSlot =
@@ -16,8 +17,17 @@ class InventoryManager {
     //*loop sugli slots
     for (InventorySlot slot in inventorySlots) {
       if (slot.block == block) {
-        if (slot.incrementCount()) {
-          return true;
+        //* ITEM?inceremento se non è un tool
+        if (block is Items &&
+            ItemData.getItemDataFor(block).toolType == Tools.none) {
+          if (slot.incrementCount()) {
+            return true;
+          }
+        } else if (block is Blocks) {
+          //*blocco
+          if (slot.incrementCount()) {
+            return true;
+          }
         }
       } else if (slot.block == null) {
         slot.block = block;
