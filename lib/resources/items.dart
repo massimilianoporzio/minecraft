@@ -1,3 +1,5 @@
+enum Tools { none, sword, shovel, pickaxe, axe }
+
 enum Items {
   woodenSword,
   woodenShovel,
