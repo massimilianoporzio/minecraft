@@ -106,6 +106,11 @@ class InventorySlotWidget extends StatelessWidget {
             }
           },
           child: Draggable(
+            onDragCompleted: () {
+              //*quando ho fatto un drag dalla zona di craft ricerca di nuovo ricetta
+              GlobalGameReference.instance.mainGameRef.worldData.craftingManager
+                  .checkForRecipe();
+            },
             //*dati associati con il draggable
             data: inventorySlot,
             //*feedback è quello che vedo quando trascino

@@ -27,5 +27,7 @@ enum Items {
   goldIngot,
   lolliteSword,
   lollitePickaxe,
-  lolliteIngot
+  lolliteIngot,
+  lolliteShovel,
+  lolliteAxe
 }
