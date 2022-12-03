@@ -119,6 +119,8 @@ class MainGame extends FlameGame
       worldData.inventoryManager.addBlockToInventory(Blocks.birchPlank);
       worldData.inventoryManager.addBlockToInventory(Items.stick);
       worldData.inventoryManager.addBlockToInventory(Items.stick);
+
+      worldData.inventoryManager.addBlockToInventory(Blocks.furnace);
     });
   }
 

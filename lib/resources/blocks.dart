@@ -25,7 +25,9 @@ enum Blocks {
   craftingTable,
   cobblestone,
   bedrock,
-  lollite
+  lollite,
+  furnace,
+  furnaceOn,
 }
 //* SONO NELL'ORDINE IN CUI LI TROVO NELLO SPRITESHEET!
 
@@ -119,6 +121,12 @@ class BlockData {
         return BlockData.woodPlank;
 
       case Blocks.craftingTable:
+        return BlockData.woodPlank;
+
+      case Blocks.furnace:
+        return BlockData.woodPlank;
+
+      case Blocks.furnaceOn:
         return BlockData.woodPlank;
 
       case Blocks.cobblestone:

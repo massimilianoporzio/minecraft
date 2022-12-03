@@ -325,5 +325,11 @@ class Recipe {
         keys: {Items.lolliteIngot: "L", Items.stick: "S"},
         product: Items.lolliteAxe,
         productCount: 1),
+
+    Recipe(
+        recipe: RegExp("CCCCECCCC"),
+        keys: {Blocks.cobblestone: "C"},
+        product: Blocks.furnace,
+        productCount: 1),
   ];
 }

@@ -31,7 +31,7 @@ enum Items {
   lollitePickaxe,
   lolliteIngot,
   lolliteShovel,
-  lolliteAxe
+  lolliteAxe,
 }
 
 class ItemData {
